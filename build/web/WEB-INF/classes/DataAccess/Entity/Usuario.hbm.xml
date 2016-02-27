@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/02/2016 05:57:42 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="DataAccess.Entity.Usuario" table="usuario" catalog="examenes" optimistic-lock="version">
+        <id name="idUsuario" type="java.lang.Integer">
+            <column name="idUsuario" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="rol" class="DataAccess.Entity.Rol" fetch="select">
+            <column name="Rol_idRol" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="200" not-null="true" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="apellido" length="200" not-null="true" />
+        </property>
+        <property name="documento" type="string">
+            <column name="documento" length="20" not-null="true" />
+        </property>
+        <property name="clave" type="string">
+            <column name="clave" length="200" />
+        </property>
+        <set name="consultas" table="consulta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Usuario_idUsuario" not-null="true" />
+            </key>
+            <one-to-many class="DataAccess.Entity.Consulta" />
+        </set>
+        <set name="pacientes" table="paciente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Usuario_idUsuario" not-null="true" />
+            </key>
+            <one-to-many class="DataAccess.Entity.Paciente" />
+        </set>
+    </class>
+</hibernate-mapping>

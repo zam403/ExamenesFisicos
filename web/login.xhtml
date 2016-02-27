@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>EXAMENES FISICOS</title>
+        <link href="#{appManagedBean.baseUrl}resources/css/examenes.css" type="text/css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://cdn.primefaces.org/primeui/3.0.0/themes/start/theme.css" />
+    </h:head>
+    <h:body>
+        <div class="conteiner ">
+            <p:growl id="mensajes" showDetail="true" life="2000" />
+            <h:form>
+                <p:panel header="Login">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel for="username" value="Usuario(Documento):" />
+                        <p:inputText value="#{loginBean.nombre}" id="username"
+                                     required="true" label="username" />
+                        <h:outputLabel for="password" value="Clave:" />
+                        <p:password value="#{loginBean.clave}" id="password" required="true"
+                                    label="password" />
+                        <f:facet name="footer">
+                            <p:commandButton id="loginButton" value="Login"
+                                             actionListener="#{loginBean.login(actionEvent)}" update=":mensajes"
+                                             oncomplete="manejarLogin(xhr, status, args)" />
+                        </f:facet>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </h:body>
+    <script type="text/javascript">
+        function manejarLogin(xhr, status, args) {            
+            if (!args.validationFailed) {
+                if (args.estaLogeado) {
+                    setTimeout(function () {
+                        window.location = args.view;
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</html>
+

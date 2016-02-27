@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/02/2016 05:57:42 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="DataAccess.Entity.Consulta" table="consulta" catalog="examenes" optimistic-lock="version">
+        <id name="idConsulta" type="java.lang.Integer">
+            <column name="idConsulta" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="paciente" class="DataAccess.Entity.Paciente" fetch="select">
+            <column name="Paciente_idPaciente" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="DataAccess.Entity.Usuario" fetch="select">
+            <column name="Usuario_idUsuario" not-null="true" />
+        </many-to-one>
+        <property name="aptitud" type="boolean">
+            <column name="aptitud" not-null="true" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="diagnostico" type="string">
+            <column name="diagnostico" length="200" />
+        </property>
+        <property name="criterio" type="string">
+            <column name="criterio" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>
