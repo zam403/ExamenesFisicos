@@ -17,6 +17,21 @@ import util.HibernateUtil;
  */
 public class UsuarioDAOImpl implements UsuarioDAO {
 
+    public Usuario crearUsuario(Usuario usuario){
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction temp = null;
+        try{
+            temp = session.beginTransaction();
+            session.persist(usuario);
+            temp.commit();
+        }catch(Exception e){
+            System.out.println(e);
+            temp.rollback();
+        }
+        System.out.println(usuario.getIdUsuario());
+        return usuario;
+    }    
+    
     @Override
     public Usuario findUsuario(String documento) {
         Usuario model = new Usuario();

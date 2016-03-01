@@ -13,6 +13,7 @@ import DataAccess.Entity.Usuario;
  */
 public interface UsuarioDAO {
     
+    public Usuario crearUsuario(Usuario usuario);
     public Usuario findUsuario(String documento);
     
 }
