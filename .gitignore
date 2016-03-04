@@ -10,7 +10,10 @@ setup/
 
 #Conf de la bd
 src/conf/
+<<<<<<< HEAD
 build/web/WEB-INF/classes/hibernate.cfg.xml
 nbproject/private/private.properties
 src/java/hibernate.cfg.xml
 nbproject/private/private.properties
+=======
+>>>>>>> parent of 05ef7d2... CRUD Usuario

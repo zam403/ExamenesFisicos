@@ -107,8 +107,7 @@ public class LoginBean implements Serializable {
                 if (this.usuario != null && this.usuario.getClave().equals(clave)) {//this.documento.equals("admin") && this.clave.equals("admin")
                     this.logeado = true;
                     if (this.usuario.getRol().getIdRol() == 1) {
-                        //ruta = MyUtil.basePathLogin() + "menu_principal.xhtml";
-                        ruta = MyUtil.basePathLogin() + "views/Admin/menuAdmin.xhtml";
+                        ruta = MyUtil.basePathLogin() + "menu_principal.xhtml";
                     } else {
                         ruta = MyUtil.basePathLogin() + "index.xhtml";
                     }
