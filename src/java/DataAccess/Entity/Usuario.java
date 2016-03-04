@@ -35,6 +35,8 @@ public class Usuario  implements java.io.Serializable {
      private Set pacientes = new HashSet(0);
 
     public Usuario() {
+        this.idUsuario = 0;
+        this.rol = new Rol();
     }
 
 	

@@ -10,3 +10,6 @@ setup/
 
 #Conf de la bd
 src/conf/
+build/web/WEB-INF/classes/hibernate.cfg.xml
+nbproject/private/private.properties
+src/java/hibernate.cfg.xml

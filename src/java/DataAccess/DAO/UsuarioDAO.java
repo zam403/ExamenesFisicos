@@ -6,6 +6,7 @@
 package DataAccess.DAO;
 
 import DataAccess.Entity.Usuario;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,9 @@ public interface UsuarioDAO {
     
     public Usuario crearUsuario(Usuario usuario);
     public Usuario findUsuario(String documento);
+    public List<Usuario> findAllUsers();
+    public boolean create(Usuario usuario);
+    public boolean update(Usuario usuario);
+    public boolean delete(Integer id);
     
 }

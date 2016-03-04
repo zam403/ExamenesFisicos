@@ -28,6 +28,7 @@ public class Rol  implements java.io.Serializable {
      private Set usuarios = new HashSet(0);
 
     public Rol() {
+        this.idRol = 0;
     }
 
 	

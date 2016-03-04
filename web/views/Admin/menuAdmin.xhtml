@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msgs" showDetail="true" />
+                <p:tabView id="tabAdmin">
+                    <p:tab title="Usuarios" id="tabUsers" >
+                        <h:form>
+                            <p:commandButton update=":tabAdmin:formCreate" 
+                                             oncomplete="PF('userCreateDialog').show()" 
+                                             icon="ui-icon-plus" title="Crear"
+                                             id="btnCreateUser" value="Crear"/>
+                        </h:form>
+                        <h:form id="formDataUsers">
+                            <p:dataTable id="userTable" var="user" value="#{usuarioBean.users}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorPosition="bottom">
+                                <p:column headerText="Id"
+                                          filterBy="#{user.idUsuario}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.idUsuario}" />
+                                </p:column>
+                                <p:column headerText="Nombre"
+                                          filterBy="#{user.nombre}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.nombre}" />
+                                </p:column>
+                                <p:column headerText="Apellido"
+                                          filterBy="#{user.apellido}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.apellido}" />
+                                </p:column>
+                                <p:column headerText="Documento"
+                                          filterBy="#{user.documento}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.documento}" />
+                                </p:column>
+                                <p:column headerText="Rol"
+                                          filterBy="#{user.rol.rol}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.rol.rol}" />
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":tabAdmin:formUpdate" 
+                                                     oncomplete="PF('userUpdateDialog').show()" 
+                                                     icon="ui-icon-pencil" title="Modificar" id="btnUpdate">
+                                        <f:setPropertyActionListener value="#{user}" target="#{usuarioBean.selectedUser}" />
+                                    </p:commandButton>
+                                    <p:commandButton update=":tabAdmin:formDelete" 
+                                                     oncomplete="PF('userDeleteDialog').show()" 
+                                                     icon="ui-icon-trash" title="Eliminar" id="btnDelete">
+                                        <f:setPropertyActionListener value="#{user}" target="#{usuarioBean.selectedUser}" />
+                                    </p:commandButton>                               
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <h:form id="formCreate">
+                            <p:dialog header="Crear Usuario" widgetVar="userCreateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" columnClasses="label,value">
+
+                                    <h:outputText value="Id" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.idUsuario}" />
+
+                                    <h:outputText value="Nombre" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" />
+
+                                    <h:outputText value="Apellido" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"/>
+
+                                    <h:outputText value="Documento" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" />
+
+                                    <h:outputText value="Password" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" />
+
+                                    <h:outputText value="Rol" />
+                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}">
+                                        <f:selectItem itemLabel="Select One" itemValue="" />
+                                        <f:selectItems value="#{rolBean.selectRol}" />
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabAdmin:formDataUsers, :msgs" 
+                                                     oncomplete="PF('userCreateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnCreateAccept" value="Aceptar"
+                                                     actionListener="#{usuarioBean.createUser(actionEvent)}"/>
+                                    <p:commandButton oncomplete="PF('userCreateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnCreateCancel" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                        <h:form id="formUpdate">
+                            <p:dialog header="Modificar Usuario" widgetVar="userUpdateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
+                                              columnClasses="label,value">
+
+                                    <h:outputText value="Id" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.idUsuario}" />
+
+                                    <h:outputText value="Nombre" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" />
+
+                                    <h:outputText value="Apellido" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"/>
+
+                                    <h:outputText value="Documento" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" />
+
+                                    <h:outputText value="Password" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" />
+
+                                    <h:outputText value="Rol" />
+                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}">
+                                        <f:selectItem itemLabel="Select One" itemValue="" />
+                                        <f:selectItems value="#{rolBean.selectRol}" />
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabAdmin:formDataUsers, :msgs" 
+                                                     oncomplete="PF('userUpdateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnUpdateAccept" value="Aceptar"
+                                                     actionListener="#{usuarioBean.updateUser(actionEvent)}"/>
+                                    <p:commandButton oncomplete="PF('userUpdateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnUpdateCancel" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                        <h:form id="formDelete">   
+                            <p:confirmDialog id="idconfirmDialog" message="En realidad desea eliminar este registro?"
+                                             header="Eliminar Registro" widgetVar="userDeleteDialog"
+                                             showEffect="fade" hideEffect="explode">
+                                <h:inputHidden value="#{usuarioBean.selectedUser.idUsuario}"/>
+                                <p:commandButton id="btnDeleteAceptar" value="Aceptar" 
+                                                 update=":tabAdmin:formDataUsers :msgs" 
+                                                 actionListener="#{usuarioBean.deleteUser(actionEvent)}" 
+                                                 oncomplete="PF('userDeleteDialog').hide();"/>
+                                <p:commandButton id="btnDeleteCancelar" value="Cancelar" 
+                                                 update=":tabAdmin:formDataUsers :msgs" 
+                                                 oncomplete="PF('userDeleteDialog').hide();"/>
+                            </p:confirmDialog>                    
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="Consultas">
+                        <!--<h:form>
+                            <p:commandButton update=":tabAdmin:formCreateConsulta" 
+                                             oncomplete="PF('consultCreateDialog').show()" 
+                                             icon="ui-icon-plus" title="Crear"
+                                             id="btnCreateConsult" value="Crear"/>
+                        </h:form>-->
+                        <h:form id="formDataConsultations">
+                            <p:dataTable id="consultTable" var="consult" value="#">
+                                <p:column headerText="Paciente">
+                                    <h:outputText value="#" />
+                                </p:column>
+                                <p:column headerText="Doctor">
+                                    <h:outputText value="#" />
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <h:outputText value="#" />
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":tabAdmin:formUpdateConsulta" 
+                                                     oncomplete="PF('consultUpdateDialog').show()" 
+                                                     icon="ui-icon-pencil" title="Modificar" id="btnUpdateConsult">
+                                        <f:setPropertyActionListener value="#" target="#" />
+                                    </p:commandButton>
+                                    <p:commandButton update=":tabAdmin:formDeleteConsulta" 
+                                                     oncomplete="PF('consultDeleteDialog').show()" 
+                                                     icon="ui-icon-trash" title="Eliminar" id="btnDeleteConsult">
+                                        <f:setPropertyActionListener value="#" target="#" />
+                                    </p:commandButton>                               
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <h:form id="formCreateConsulta">
+                            <p:dialog header="Crear Usuario" widgetVar="consultCreateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" columnClasses="label,value">
+
+                                    <h:outputText value="Paciente" />
+                                    <p:inputText value="#" />
+
+                                    <h:outputText value="Doctor" />
+                                    <p:inputText value="#" />
+
+                                    <h:outputText value="Fecha" />
+                                    <p:inputText value="#"/>
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabAdmin:formDataConsultations, :msgs" 
+                                                     oncomplete="PF('consultCreateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnCreateAcceptConsult" value="Aceptar"
+                                                     actionListener="#"/>
+                                    <p:commandButton oncomplete="PF('consultCreateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnCreateCancelConsult" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                        <h:form id="formUpdateConsulta">
+                            <p:dialog header="Modificar Usuario" widgetVar="consultUpdateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
+                                              columnClasses="label,value">
+
+                                    <h:outputText value="Paciente" />
+                                    <p:inputText value="#" />
+
+                                    <h:outputText value="Doctor" />
+                                    <p:inputText value="#" />
+
+                                    <h:outputText value="Fecha" />
+                                    <p:inputText value="#"/>
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabAdmin:formDataConsultations, :msgs" 
+                                                     oncomplete="PF('consultUpdateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnUpdateAcceptConsult" value="Aceptar"
+                                                     actionListener="#"/>
+                                    <p:commandButton oncomplete="PF('consultUpdateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnUpdateCancelConsult" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                        <h:form id="formDeleteConsulta">   
+                            <p:confirmDialog id="idconfirmDialog" message="En realidad desea eliminar esta consulta?"
+                                             header="Eliminar Registro" widgetVar="consultDeleteDialog"
+                                             showEffect="fade" hideEffect="explode">
+                                <h:inputHidden value="#"/>
+                                <p:commandButton id="btnDeleteAceptarConsult" value="Aceptar" 
+                                                 update=":tabAdmin:formDataConsultations :msgs" 
+                                                 actionListener="#" 
+                                                 oncomplete="PF('consultDeleteDialog').hide();"/>
+                                <p:commandButton id="btnDeleteCancelarConsult" value="Cancelar" 
+                                                 update=":tabAdmin:formDataConsultations :msgs" 
+                                                 oncomplete="PF('consultDeleteDialog').hide();"/>
+                            </p:confirmDialog>                    
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="Pacientes">
+                    </p:tab>
+                </p:tabView>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
