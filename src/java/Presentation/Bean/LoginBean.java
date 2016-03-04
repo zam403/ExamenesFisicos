@@ -106,11 +106,14 @@ public class LoginBean implements Serializable {
                 this.setUsuario(this.usuarioDAO.findUsuario(documento));
                 if (this.usuario != null && this.usuario.getClave().equals(clave)) {//this.documento.equals("admin") && this.clave.equals("admin")
                     this.logeado = true;
+                    context.addCallbackParam("idUsuario", this.usuario.getIdUsuario());
+                    System.out.println("id Usuario Logeado 1: " + context.getCallbackParams().get("idUsuario"));
                     if (this.usuario.getRol().getIdRol() == 1) {
-                        //ruta = MyUtil.basePathLogin() + "menu_principal.xhtml";
                         ruta = MyUtil.basePathLogin() + "views/Admin/menuAdmin.xhtml";
+                    } else if (this.usuario.getRol().getIdRol() == 2) {
+                        ruta = MyUtil.basePathLogin() + "menu_doctor.xhtml";
                     } else {
-                        ruta = MyUtil.basePathLogin() + "index.xhtml";
+                        ruta = MyUtil.basePathLogin() + "menu_empresa.xhtml";
                     }
                     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", this.usuario.getNombre());// + " " + this.usuario.getApellido());
                 } else {
@@ -156,8 +159,8 @@ public class LoginBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("view", ruta);
     }
-    
-    public void registrarUsuario(ActionEvent actionEvent){
+
+    public void registrarUsuario(ActionEvent actionEvent) {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro", "Registrar nuevo usuario");
@@ -169,7 +172,7 @@ public class LoginBean implements Serializable {
     public void logout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
-        session.invalidate();        
+        session.invalidate();
         this.logeado = false;
         RequestContext context = RequestContext.getCurrentInstance();
         String ruta = MyUtil.basePathLogin() + "login.xhtml";
