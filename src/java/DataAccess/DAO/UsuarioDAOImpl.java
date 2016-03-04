@@ -18,21 +18,21 @@ import util.HibernateUtil;
  */
 public class UsuarioDAOImpl implements UsuarioDAO {
 
-    public Usuario crearUsuario(Usuario usuario){
+    public Usuario crearUsuario(Usuario usuario) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction temp = null;
-        try{
+        try {
             temp = session.beginTransaction();
             session.persist(usuario);
             temp.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             temp.rollback();
         }
         System.out.println(usuario.getIdUsuario());
         return usuario;
-    }    
-    
+    }
+
     @Override
     public Usuario findUsuario(String documento) {
         Usuario u = new Usuario();
@@ -53,7 +53,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         System.out.println("Finalizo la busqueda");
         return u;
     }
-    
+
     @Override
     public List<Usuario> findAllUsers() {
         List<Usuario> users = null;
@@ -125,6 +125,26 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             flag = false;
             temp.rollback();
             System.out.println(e);
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean existsUser(Usuario usuario) {
+        boolean flag = false;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "select count(*) FROM Usuario where documento = '" + usuario.getDocumento() + "'";
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            Integer c = ((Long) session.createQuery(sql).iterate().next()).intValue();
+            if (c>0) {
+                flag = true;
+            }
+            System.out.println("c:  " + c);
+            
+        } catch (Exception e) {
+            System.out.println("e: " + e);
         }
         return flag;
     }

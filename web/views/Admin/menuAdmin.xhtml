@@ -67,25 +67,33 @@
                         <h:form id="formCreate">
                             <p:dialog header="Crear Usuario" widgetVar="userCreateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid  columns="2" columnClasses="label,value">
-
-                                    <h:outputText value="Id" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.idUsuario}" />
-
-                                    <h:outputText value="Nombre" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" />
+                                <p:panelGrid id="userCreate" columns="2" columnClasses="label,value">
+                                    <h:outputLabel value="Nombre" for="userName"/>
+                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" 
+                                                 required="true"
+                                                 requiredMessage="Nombre requerido."/>
 
                                     <h:outputText value="Apellido" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"/>
+                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"
+                                                 required="true"
+                                                 requiredMessage="Apellido requerido."/>
 
                                     <h:outputText value="Documento" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" 
+                                                 required="true"
+                                                 requiredMessage="Documento requerido.">
+                                        <f:validateLength minimum="8" />
+                                    </p:inputText>
 
                                     <h:outputText value="Password" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" 
+                                                 required="true"
+                                                 requiredMessage="Clave requerida."/>
 
                                     <h:outputText value="Rol" />
-                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}">
+                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}"
+                                                     required="true"
+                                                     requiredMessage="Rol requerido.">
                                         <f:selectItem itemLabel="Select One" itemValue="" />
                                         <f:selectItems value="#{rolBean.selectRol}" />
                                     </p:selectOneMenu>
@@ -108,23 +116,32 @@
                                 <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
                                               columnClasses="label,value">
 
-                                    <h:outputText value="Id" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.idUsuario}" />
-
                                     <h:outputText value="Nombre" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.nombre}" 
+                                                 required="true"
+                                                 requiredMessage="Nombre requerido."/>
 
                                     <h:outputText value="Apellido" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"/>
+                                    <p:inputText value="#{usuarioBean.selectedUser.apellido}"
+                                                 required="true"
+                                                 requiredMessage="Apellido requerido."/>
 
                                     <h:outputText value="Documento" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.documento}" 
+                                                 required="true"
+                                                 requiredMessage="Documento requerido."/>
 
                                     <h:outputText value="Password" />
-                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" />
+                                    <p:inputText value="#{usuarioBean.selectedUser.clave}" 
+                                                 required="true"
+                                                 requiredMessage="Password requerido.">
+                                        <f:validateLength minimum="8" />
+                                    </p:inputText>
 
                                     <h:outputText value="Rol" />
-                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}">
+                                    <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}"
+                                                     required="true"
+                                                     requiredMessage="Rol requerido.">
                                         <f:selectItem itemLabel="Select One" itemValue="" />
                                         <f:selectItems value="#{rolBean.selectRol}" />
                                     </p:selectOneMenu>

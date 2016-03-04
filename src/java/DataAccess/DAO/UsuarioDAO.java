@@ -20,5 +20,6 @@ public interface UsuarioDAO {
     public boolean create(Usuario usuario);
     public boolean update(Usuario usuario);
     public boolean delete(Integer id);
+    public boolean existsUser(Usuario usuario);
     
 }
