@@ -109,7 +109,7 @@ public class LoginBean implements Serializable {
                     context.addCallbackParam("idUsuario", this.usuario.getIdUsuario());
                     System.out.println("id Usuario Logeado 1: " + context.getCallbackParams().get("idUsuario"));
                     if (this.usuario.getRol().getIdRol() == 1) {
-                        ruta = MyUtil.basePathLogin() + "menu_admin.xhtml";
+                        ruta = MyUtil.basePathLogin() + "views/Admin/menuAdmin.xhtml";
                     } else if (this.usuario.getRol().getIdRol() == 2) {
                         ruta = MyUtil.basePathLogin() + "menu_doctor.xhtml";
                     } else {
