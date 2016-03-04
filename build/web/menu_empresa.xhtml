@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>MENU EMPRESA</title>
+    </h:head>
+    <h:body>
+        <div class="conteiner ">            
+            <p:growl id="mensajes" showDetail="true" life="2000" />
+            <h:form id="form">
+                <p:tabView>
+                    <p:tab title="Vincular Paciente">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputLabel for="documento" value="Documento:" />
+                            <p:inputText value="#{empresaBean.documento}" id="documento"
+                                         label="documento"/>
+                            <h:outputLabel for="nombre" value="Nombres:" />
+                            <p:inputText value="#{empresaBean.nombre}" id="nombre"
+                                         label="nombre"/>
+                            <h:outputLabel for="apellido" value="Apellidos:" />
+                            <p:inputText value="#{empresaBean.apellido}" id="apellido"
+                                         label="apellido"/>
+                            <h:outputLabel for="criterio" value="Criterio a evaluar:" />
+                            <p:inputText value="#{empresaBean.criterio}" id="criterio"
+                                         label="criterio" />
+                            <f:facet name="footer">
+                                <p:commandButton id="nuevoButton" value="Vincular"
+                                                 actionListener="#{empresaBean.registrarPaciente(actionEvent)}" update=":mensajes"/>
+                            </f:facet>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Consultar Pacientes">
+                        <h:panelGrid columns="2" cellpadding="10" onclick="#{empresaBean.consultarDiagnosticoPacientes(actionEvent)}">
+                            <p:dataTable var="consulta" value="#{empresaBean.consultas}">
+                                <p:column headerText="Consulta">
+                                    <h:outputText value="#{consulta.idConsulta}" />
+                                </p:column>
+                                <p:column headerText="Paciente">
+                                    <h:outputText value="#{consulta.paciente.idPaciente}" />
+                                </p:column>
+                                <p:column headerText="Doctor">
+                                    <h:outputText value="#{consulta.usuario.idUsuario}" />
+                                </p:column>
+                                <p:column headerText="Criterio">
+                                    <h:outputText value="#{consulta.criterio}" />
+                                </p:column>                                
+                                <p:column headerText="Diagnostico">
+                                    <h:outputText value="#{consulta.diagnostico}" />
+                                </p:column>
+                                <p:column headerText="fecha">
+                                    <h:outputText value="#{consulta.fecha}" />
+                                </p:column>
+                                <p:column headerText="Apto?">
+                                    <h:selectBooleanCheckbox value="#{consulta.aptitud}" />
+                                </p:column>
+                            </p:dataTable>
+                            <f:facet name="footer">
+                                <p:commandButton id="nuevoButton2" value="Actualizar"
+                                                 oncomplete="actualizar(xhr, status, args)"/>
+                            </f:facet>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </div>
+    </h:body>
+    <script type="text/javascript">
+        function actualizar(xhr, status, args) {
+                location.reload();
+        }
+    </script>
+</html>
+
