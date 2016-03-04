@@ -20,3 +20,10 @@ nbproject/private/private.xml
 nbproject/private/private.properties
 build/web/WEB-INF/classes/hibernate.cfg.xml
 build/web/WEB-INF/classes/hibernate.cfg.xml
+build/web/WEB-INF/classes/Presentation/Bean/LoginBean.class
+*.xml
+nbproject/private/private.xml
+*.class
+nbproject/private/private.xml
+src/java/Presentation/Bean/empresaBean.java
+nbproject/private/private.xml
