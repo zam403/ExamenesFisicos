@@ -90,7 +90,7 @@
                                         <f:selectItems value="#{rolBean.selectRol}" />
                                     </p:selectOneMenu>
                                 </p:panelGrid>
-                                <f:facet name="footer">
+                                <p:column style="width:32px;text-align: center">
                                     <p:commandButton update=":tabAdmin:formDataUsers, :msgs" 
                                                      oncomplete="PF('userCreateDialog').hide()" 
                                                      icon="ui-icon-disk" title="Aceptar"
@@ -99,7 +99,7 @@
                                     <p:commandButton oncomplete="PF('userCreateDialog').hide()" 
                                                      icon="ui-icon-close" title="Cancelar"
                                                      id="btnCreateCancel" value="Cancelar"/>
-                                </f:facet>
+                                </p:column>
                             </p:dialog>
                         </h:form>
                         <h:form id="formUpdate">
@@ -254,6 +254,9 @@
                                                  update=":tabAdmin:formDataConsultations :msgs" 
                                                  oncomplete="PF('consultDeleteDialog').hide();"/>
                             </p:confirmDialog>                    
+                        </h:form>
+                        <h:form id="formAddPatient">
+                            
                         </h:form>
                     </p:tab>
                     <p:tab title="Pacientes">
