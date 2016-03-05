@@ -117,5 +117,22 @@ public class ConsultaDAOImpl implements ConsultaDAO{
         }
         return consults;
     }
+
+    @Override
+    public Consulta findConsult(Integer id) {
+        Consulta consulta = new Consulta();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "FROM Consulta c left join fetch c.paciente left join fetch c.usuario where c.id = '" + id + "'";
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            consulta = (Consulta) session.createQuery(sql).uniqueResult();
+            temp.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            temp.rollback();
+        }
+        return consulta;
+    }
     
 }

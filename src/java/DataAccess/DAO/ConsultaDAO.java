@@ -20,5 +20,5 @@ public interface ConsultaDAO {
     public boolean update(Consulta consulta);
     public boolean delete(Integer id);
     public List<Consulta> findAllConsults();
-    
+    public Consulta findConsult(Integer id);
 }

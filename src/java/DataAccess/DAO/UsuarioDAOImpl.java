@@ -150,4 +150,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         return flag;
     }
 
+    @Override
+    public List<Usuario> findAllDoctors() {
+        List<Usuario> users = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "from Usuario u left join fetch u.rol where u.rol.rol='Medico'";
+        Transaction temp = null;
+        try {
+            //session.beginTransaction();
+            temp = session.beginTransaction();
+            users = session.createQuery(sql).list();
+            //session.beginTransaction().commit();
+            temp.commit();
+        } catch (Exception e) {
+            //session.beginTransaction().rollback();
+            temp.rollback();
+            System.out.println(e);
+        }
+        return users;
+    }
+
 }

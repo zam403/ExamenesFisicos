@@ -8,6 +8,7 @@ package DataAccess.DAO;
 import DataAccess.Entity.Paciente;
 import DataAccess.Entity.Usuario;
 import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
@@ -53,6 +54,26 @@ public class PacienteDAOImpl implements PacienteDAO {
         }
         System.out.println("Finalizo la busqueda");
         return model;
+    }
+
+    @Override
+    public List<Paciente> findAllPatients() {
+        List<Paciente> patients = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "from Paciente";
+        Transaction temp = null;
+        try {
+            //session.beginTransaction();
+            temp = session.beginTransaction();
+            patients = session.createQuery(sql).list();
+            //session.beginTransaction().commit();
+            temp.commit();
+        } catch (Exception e) {
+            //session.beginTransaction().rollback();
+            temp.rollback();
+            System.out.println(e);
+        }
+        return patients;
     }
 
 }

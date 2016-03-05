@@ -7,6 +7,7 @@ package DataAccess.DAO;
 
 import DataAccess.Entity.Paciente;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,5 +17,6 @@ public interface PacienteDAO{
     
     public Paciente registrarPaciente(Paciente paciente);
     public ArrayList<Paciente> buscarPacientes(String id_empresa);
+    public List<Paciente> findAllPatients();
     
 }

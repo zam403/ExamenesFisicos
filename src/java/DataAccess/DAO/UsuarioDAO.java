@@ -17,6 +17,7 @@ public interface UsuarioDAO {
     public Usuario crearUsuario(Usuario usuario);
     public Usuario findUsuario(String documento);
     public List<Usuario> findAllUsers();
+    public List<Usuario> findAllDoctors();
     public boolean create(Usuario usuario);
     public boolean update(Usuario usuario);
     public boolean delete(Integer id);

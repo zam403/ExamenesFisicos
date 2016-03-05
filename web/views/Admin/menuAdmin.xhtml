@@ -5,8 +5,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+    </h:head>
 
-    <body>
+    <h:body>
 
         <ui:composition template="./../template.xhtml">
 
@@ -184,26 +188,49 @@
                                              id="btnCreateConsult" value="Crear"/>
                         </h:form>-->
                         <h:form id="formDataConsultations" >
-                            <p:dataTable id="consultTable" var="consult" value="#{consultaBean.consults}">
-                                <p:column headerText="Paciente">
+                            <p:dataTable id="consultTable" var="consult" value="#{dFView.consults}">
+                                <p:column headerText="Id" style="text-align: center; width: 50px">                                    
+                                    <h:inputText id="idConsult" value="#{dFView.idConsult}"/>
+                                    <h:outputText value="#{consult.idConsulta}"/>
+                                </p:column>
+                                <p:column headerText="Paciente" style="text-align: center">
                                     <h:outputText value="#{consult.paciente.nombre} #{consult.paciente.apellido}" />
                                 </p:column>
-                                <p:column headerText="Doctor">
+                                <p:column style="width: 40px;text-align: center">
+                                    <p:commandButton icon="ui-icon-transferthick-e-w"
+                                                     actionListener="#{dFView.choosePatient}">
+                                        <p:ajax event="dialogReturn" 
+                                                process="@all"
+                                                listener="#{dFView.onPatientChosen}" 
+                                                update=":tabAdmin:formDataConsultations, :msgs"
+                                                />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column headerText="Doctor" style="text-align: center">
                                     <h:outputText value="#{consult.usuario.nombre} #{consult.usuario.apellido}" />
+                                </p:column>
+                                <p:column style="width: 40px;text-align: center">
+                                    <p:commandButton icon="ui-icon-transferthick-e-w"
+                                                     actionListener="#{dFView.chooseDoctor}">
+                                        <p:ajax event="dialogReturn" 
+                                                process="@all"
+                                                listener="#{dFView.onDoctorChosen}" 
+                                                update=":tabAdmin:formDataConsultations, :msgs"/>
+                                    </p:commandButton>
                                 </p:column>
                                 <p:column headerText="Fecha">
                                     <h:outputText value="#{consult.fecha}" />
                                 </p:column>
-                                <p:column style="width:32px;text-align: center">
-                                    <p:commandButton update=":tabAdmin:formUpdateConsulta" 
-                                                     oncomplete="PF('consultUpdateDialog').show()" 
-                                                     icon="ui-icon-pencil" title="Modificar" id="btnUpdateConsult">
-                                        <f:setPropertyActionListener value="#" target="#" />
+                                <p:column style="width: 40px;text-align: center">
+                                    <p:commandButton icon="ui-icon-calendar">
                                     </p:commandButton>
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
                                     <p:commandButton update=":tabAdmin:formDeleteConsulta" 
                                                      oncomplete="PF('consultDeleteDialog').show()" 
                                                      icon="ui-icon-trash" title="Eliminar" id="btnDeleteConsult">
-                                        <f:setPropertyActionListener value="#" target="#" />
+                                        <f:setPropertyActionListener value="#{consult}" 
+                                                                     target="#{consultaBean.selectedConsult}" />
                                     </p:commandButton>                               
                                 </p:column>
                             </p:dataTable>
@@ -235,21 +262,28 @@
                             </p:dialog>
                         </h:form>
                         <h:form id="formUpdateConsulta">
+                            <p:growl id="msgAdd" showDetail="true" />
                             <p:dialog header="Modificar Usuario" widgetVar="consultUpdateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid  columns="3" rendered="#{not empty usuarioBean.selectedUser}" 
+                                <p:panelGrid  columns="3" rendered="#{not empty consultaBean.selectedConsult}" 
                                               columnClasses="label,value">
 
                                     <h:outputText value="Paciente" />
-                                    <p:inputText value="#" />
-                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
+                                    <h:outputText value="#{consultaBean.selectedConsult.paciente.nombre} #{consultaBean.selectedConsult.paciente.apellido}" />
+                                    <p:commandButton value="Cambiar..." 
+                                                     icon="ui-icon-transferthick-e-w"
+                                                     actionListener="#{dFView.choosePatient}">
+                                        <p:ajax listener="#{dFView.onPatientChosen}" 
+                                                update=":msgs"/>
+                                    </p:commandButton>
 
                                     <h:outputText value="Doctor" />
-                                    <p:inputText value="#" />
-                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
+                                    <h:outputText value="#{consultaBean.selectedConsult.usuario.nombre} #{consultaBean.selectedConsult.usuario.apellido}" />
+                                    <p:commandButton value="Cambiar..." 
+                                                     icon="ui-icon-transferthick-e-w"/>
 
                                     <h:outputText value="Fecha" />
-                                    <p:inputText value="#"/>
+                                    <p:inputText value="#{consultaBean.selectedConsult.fecha}"/>
                                 </p:panelGrid>
                                 <f:facet name="footer">
                                     <p:commandButton update=":tabAdmin:formDataConsultations, :msgs" 
@@ -288,5 +322,5 @@
 
         </ui:composition>
 
-    </body>
+    </h:body>
 </html>
