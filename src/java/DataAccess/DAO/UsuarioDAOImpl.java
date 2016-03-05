@@ -99,6 +99,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         Transaction temp = null;
         try {
             temp = session.beginTransaction();
+            //session.saveOrUpdate(usuario);
             session.update(usuario);
             temp.commit();
             flag = true;

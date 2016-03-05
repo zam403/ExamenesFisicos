@@ -7,6 +7,7 @@ package DataAccess.DAO;
 
 import DataAccess.Entity.Consulta;
 import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
@@ -58,6 +59,63 @@ public class ConsultaDAOImpl implements ConsultaDAO{
         }
         System.out.println("Finalizo la busqueda");
         return model;
+    }
+
+    @Override
+    public boolean update(Consulta consulta) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            session.update(consulta);
+            temp.commit();
+            flag = true;
+        } catch (Exception e) {
+            flag = false;
+            temp.rollback();
+            System.out.println(e);
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            Consulta consulta = (Consulta) session.load(Consulta.class, id);
+            session.delete(consulta);
+            temp.commit();
+            flag = true;
+        } catch (Exception e) {
+            flag = false;
+            temp.rollback();
+            System.out.println(e);
+        }
+        return flag;
+    }
+
+    @Override
+    public List<Consulta> findAllConsults() {
+        List<Consulta> consults = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "from Consulta c left join fetch c.paciente left join fetch c.usuario";
+        Transaction temp = null;
+        try {
+            //session.beginTransaction();
+            temp = session.beginTransaction();
+            consults = session.createQuery(sql).list();
+            //session.beginTransaction().commit();
+            temp.commit();
+        } catch (Exception e) {
+            //session.beginTransaction().rollback();
+            temp.rollback();
+            System.out.println(e);
+        }
+        return consults;
     }
     
 }

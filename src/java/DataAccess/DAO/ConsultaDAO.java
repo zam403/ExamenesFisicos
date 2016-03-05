@@ -7,6 +7,7 @@ package DataAccess.DAO;
 
 import DataAccess.Entity.Consulta;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,5 +17,8 @@ public interface ConsultaDAO {
     
     public Consulta crearConsulta(Consulta consulta);
     public ArrayList<Consulta> buscarConsultasEmpresa(Integer id_empresa);
+    public boolean update(Consulta consulta);
+    public boolean delete(Integer id);
+    public List<Consulta> findAllConsults();
     
 }

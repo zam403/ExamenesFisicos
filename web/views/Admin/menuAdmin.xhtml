@@ -13,7 +13,7 @@
             <ui:define name="content">
                 <p:growl id="msgs" showDetail="true" />
                 <p:tabView id="tabAdmin">
-                    <p:tab title="Usuarios" id="tabUsers" >
+                    <p:tab title="Usuarios" id="tabUsers">
                         <h:form>
                             <p:commandButton update=":tabAdmin:formCreate" 
                                              oncomplete="PF('userCreateDialog').show()" 
@@ -115,6 +115,9 @@
                                       showEffect="fade" hideEffect="explode" resizable="false">
                                 <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
                                               columnClasses="label,value">
+                                    
+                                    <h:outputText/>
+                                    <h:inputHidden value="#{usuarioBean.selectedUser.idUsuario}" />
 
                                     <h:outputText value="Nombre" />
                                     <p:inputText value="#{usuarioBean.selectedUser.nombre}" 
@@ -147,7 +150,7 @@
                                     </p:selectOneMenu>
                                 </p:panelGrid>
                                 <f:facet name="footer">
-                                    <p:commandButton update=":tabAdmin:formDataUsers, :msgs" 
+                                    <p:commandButton update=":tabAdmin, :msgs" 
                                                      oncomplete="PF('userUpdateDialog').hide()" 
                                                      icon="ui-icon-disk" title="Aceptar"
                                                      id="btnUpdateAccept" value="Aceptar"
@@ -180,16 +183,16 @@
                                              icon="ui-icon-plus" title="Crear"
                                              id="btnCreateConsult" value="Crear"/>
                         </h:form>-->
-                        <h:form id="formDataConsultations">
-                            <p:dataTable id="consultTable" var="consult" value="#">
+                        <h:form id="formDataConsultations" >
+                            <p:dataTable id="consultTable" var="consult" value="#{consultaBean.consults}">
                                 <p:column headerText="Paciente">
-                                    <h:outputText value="#" />
+                                    <h:outputText value="#{consult.paciente.nombre} #{consult.paciente.apellido}" />
                                 </p:column>
                                 <p:column headerText="Doctor">
-                                    <h:outputText value="#" />
+                                    <h:outputText value="#{consult.usuario.nombre} #{consult.usuario.apellido}" />
                                 </p:column>
                                 <p:column headerText="Fecha">
-                                    <h:outputText value="#" />
+                                    <h:outputText value="#{consult.fecha}" />
                                 </p:column>
                                 <p:column style="width:32px;text-align: center">
                                     <p:commandButton update=":tabAdmin:formUpdateConsulta" 
@@ -211,10 +214,10 @@
                                 <p:panelGrid  columns="2" columnClasses="label,value">
 
                                     <h:outputText value="Paciente" />
-                                    <p:inputText value="#" />
+                                    <p:outputLabel value="#"/>
 
                                     <h:outputText value="Doctor" />
-                                    <p:inputText value="#" />
+                                    <p:inputText value="#"/>
 
                                     <h:outputText value="Fecha" />
                                     <p:inputText value="#"/>
@@ -234,14 +237,16 @@
                         <h:form id="formUpdateConsulta">
                             <p:dialog header="Modificar Usuario" widgetVar="consultUpdateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
+                                <p:panelGrid  columns="3" rendered="#{not empty usuarioBean.selectedUser}" 
                                               columnClasses="label,value">
 
                                     <h:outputText value="Paciente" />
                                     <p:inputText value="#" />
+                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
 
                                     <h:outputText value="Doctor" />
                                     <p:inputText value="#" />
+                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
 
                                     <h:outputText value="Fecha" />
                                     <p:inputText value="#"/>

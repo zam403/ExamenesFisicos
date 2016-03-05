@@ -30,9 +30,7 @@ public class Usuario  implements java.io.Serializable {
      private Rol rol;
      private String nombre;
      private String apellido;     
-     private String documento;
-     
-     @NotEmpty(message = "El password es requerido.")
+     private String documento;     
      private String clave;
      private Set consultas = new HashSet(0);
      private Set pacientes = new HashSet(0);
