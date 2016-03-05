@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>
+            <p:dataTable var="consultas" value="#{ConsultaBean.consultas}">
+            <p:column headerText="Id">
+                <h:outputText value="#{consultas.Paciente_idpAciente}" />
+            </p:column>
+
+            <p:column headerText="Year">
+                <h:outputText value="#{consultas.fecha}" />
+            </p:column>
+
+            <p:column headerText="Brand">
+                <h:outputText value="#{consultas.aptitud}" />
+            </p:column>
+
+            <p:column headerText="Color">
+                <h:outputText value="#{consultas.diagnostico}" />
+            </p:column>
+            <p:column headerText="Color">
+                <h:outputText value="#{consultas.criterio}" />
+            </p:column>
+        </p:dataTable>
+        </div>
+    </body>
+</html>
