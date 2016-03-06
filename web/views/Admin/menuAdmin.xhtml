@@ -16,7 +16,18 @@
 
             <ui:define name="content">
                 <p:growl id="msgs" showDetail="true" />
-                <p:tabView id="tabAdmin">
+                <h:form>
+                    <p:menubar>
+                        <f:facet name="options">
+                            <!--                            <p:inputText style="margin-right:10px" placeholder="Search"/>-->
+                            <p:commandButton type="button" 
+                                             value="Logout" 
+                                             icon="ui-icon-extlink" 
+                                             actionListener="#{loginBean.logout(actionEvent)}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+                <p:tabView id="tabAdmin" >
                     <p:tab title="Usuarios" id="tabUsers">
                         <h:form>
                             <p:commandButton update=":tabAdmin:formCreate" 
@@ -85,15 +96,18 @@
                                     <h:outputText value="Documento" />
                                     <p:inputText value="#{usuarioBean.selectedUser.documento}" 
                                                  required="true"
-                                                 requiredMessage="Documento requerido.">
+                                                 requiredMessage="Documento requerido."
+                                                 id="Documento">
                                         <f:validateLength minimum="8" />
+                                        <p:ajax update=":msgs" event="keyup" />
                                     </p:inputText>
 
                                     <h:outputText value="Password" />
                                     <p:inputText value="#{usuarioBean.selectedUser.clave}" 
                                                  required="true"
-                                                 requiredMessage="Clave requerida."/>
-
+                                                 requiredMessage="Clave requerida.">
+                                        <f:validateLength minimum="8" />
+                                    </p:inputText>
                                     <h:outputText value="Rol" />
                                     <p:selectOneMenu value="#{usuarioBean.selectedUser.rol.idRol}"
                                                      required="true"
@@ -121,7 +135,8 @@
                                               columnClasses="label,value">
 
                                     <h:outputText/>
-                                    <h:inputHidden value="#{usuarioBean.selectedUser.idUsuario}" />
+                                    <h:inputHidden value="#{usuarioBean.selectedUser.idUsuario}" 
+                                                   id="id"/>
 
                                     <h:outputText value="Nombre" />
                                     <p:inputText value="#{usuarioBean.selectedUser.nombre}" 
@@ -138,7 +153,7 @@
                                                  required="true"
                                                  requiredMessage="Documento requerido."/>
 
-                                    <h:outputText value="Password" />
+                                    <h:outputLabel value="Password" />
                                     <p:inputText value="#{usuarioBean.selectedUser.clave}" 
                                                  required="true"
                                                  requiredMessage="Password requerido.">
@@ -188,15 +203,25 @@
                                              id="btnCreateConsult" value="Crear"/>
                         </h:form>-->
                         <h:form id="formDataConsultations" >
-                            <p:dataTable id="consultTable" var="consult" value="#{consultaBean.consults}">
+                            <p:dataTable id="consultTable" 
+                                         var="consult" 
+                                         value="#{consultaBean.consults}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorPosition="bottom">
+                                
                                 <p:column headerText="Id" style="text-align: center; width: 50px">                                    
                                     <h:inputText id="idConsult" value="#{dFView.idConsult}"/>
                                     <h:outputText value="#{consult.idConsulta}"/>
                                 </p:column>
-                                <p:column headerText="Paciente" style="text-align: center">
+                                
+                                <p:column headerText="Paciente" style="text-align: center"
+                                          filterBy="#{consult.paciente.nombre} #{consult.paciente.apellido}"
+                                          filterMatchMode="contains">
                                     <h:inputHidden value="#{consult.paciente.idPaciente}"/>
                                     <h:outputText value="#{consult.paciente.nombre} #{consult.paciente.apellido}" />
                                 </p:column>
+                                
                                 <p:column style="width: 40px;text-align: center">
                                     <p:commandButton icon="ui-icon-transferthick-e-w"
                                                      actionListener="#{dFView.choosePatient}">
@@ -207,10 +232,14 @@
                                                 />
                                     </p:commandButton>
                                 </p:column>
-                                <p:column headerText="Doctor" style="text-align: center">
+                                
+                                <p:column headerText="Doctor" style="text-align: center"
+                                          filterBy="#{consult.usuario.nombre} #{consult.usuario.apellido}"
+                                          filterMatchMode="contains">
                                     <h:inputHidden value="#{consult.usuario.idUsuario}"/>
                                     <h:outputText value="#{consult.usuario.nombre} #{consult.usuario.apellido}" />
                                 </p:column>
+                                
                                 <p:column style="width: 40px;text-align: center">
                                     <p:commandButton icon="ui-icon-transferthick-e-w"
                                                      actionListener="#{dFView.chooseDoctor}">
@@ -220,9 +249,13 @@
                                                 update=":tabAdmin:formDataConsultations, :msgs"/>
                                     </p:commandButton>
                                 </p:column>
-                                <p:column headerText="Fecha">
+                                
+                                <p:column headerText="Fecha"
+                                          filterBy="#{consult.fecha}"
+                                          filterMatchMode="contains">
                                     <h:outputText value="#{consult.fecha}" />
                                 </p:column>
+                                
                                 <p:column style="width: 40px;text-align: center">
                                     <p:commandButton icon="ui-icon-calendar"
                                                      update=":tabAdmin:formUpdateConsulta" 
@@ -343,7 +376,9 @@
                                           filterMatchMode="contains">
                                     <h:outputText value="#{patient.documento}" />
                                 </p:column>
-                                <p:column headerText="Empresa">
+                                <p:column headerText="Empresa"
+                                          filterBy="#{patient.usuario.nombre}"
+                                          filterMatchMode="contains">
                                     <h:outputText value="#{patient.usuario.nombre}"/>
                                 </p:column>
                                 <p:column style="width:32px;text-align: center">
@@ -369,13 +404,13 @@
 
                                     <h:inputHidden value="#{pacienteBean.selectedPatient.idPaciente}"/>
                                     <h:inputHidden value="#{pacienteBean.selectedPatient.usuario.idUsuario}"/>
-                                    
+
                                     <p:outputLabel value="Nombre" />
                                     <p:inputText value="#{pacienteBean.selectedPatient.nombre}"/>
-                                    
+
                                     <p:outputLabel value="Apellido" />
                                     <p:inputText value="#{pacienteBean.selectedPatient.apellido}"/>
-                                    
+
                                     <p:outputLabel value="Documento" />
                                     <p:inputText value="#{pacienteBean.selectedPatient.documento}"/>
                                 </p:panelGrid>

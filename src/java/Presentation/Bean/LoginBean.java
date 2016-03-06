@@ -169,7 +169,7 @@ public class LoginBean implements Serializable {
         context.addCallbackParam("view", ruta);
     }
 
-    public void logout() {
+    public void logout(ActionEvent actionEvent) {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
