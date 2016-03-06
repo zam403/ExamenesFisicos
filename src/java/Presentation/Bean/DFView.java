@@ -84,8 +84,7 @@ public class DFView implements Serializable{
             ConsultaDAO consultaDAO = new ConsultaDAOImpl();
             if (consultaDAO.update(consulta)) {
                 msgs = "Consulta modificada éxitosamente.";
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, 
-                        consulta.getIdConsulta().toString());
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
             } else {
                 msgs = "La consulta no puedo modificarse.";
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
@@ -113,10 +112,10 @@ public class DFView implements Serializable{
     }
 
     public void onDoctorChosen(SelectEvent event) {
+        Consulta consulta = (Consulta) event.getObject();
         FacesMessage message;
         String msgs;
         try {
-            Consulta consulta = (Consulta) event.getObject();
             ConsultaDAO consultaDAO = new ConsultaDAOImpl();
             if (consultaDAO.update(consulta)) {
                 msgs = "Consulta modificada éxitosamente.";
@@ -125,7 +124,7 @@ public class DFView implements Serializable{
                 msgs = "La consulta no puedo modificarse.";
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
             }
-        }catch (IllegalArgumentException | NullPointerException i) {
+        }catch (NullPointerException i) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "No selecciono ningun doctor", null);
         }

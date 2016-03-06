@@ -1,4 +1,4 @@
-#nbproject/
+nbproject/
 build/
 dist/
 build.xml
@@ -11,18 +11,15 @@ setup/
 #Conf de la bd
 src/conf/
 build/web/WEB-INF/classes/hibernate.cfg.xml
-#nbproject/private/private.properties
+nbproject/private/private.properties
 src/java/hibernate.cfg.xml
-#nbproject/private/private.properties
+nbproject/private/private.properties
 build/web/WEB-INF/classes/hibernate.cfg.xml
 build/web/WEB-INF/classes/hibernate.cfg.xml
-#nbproject/private/private.xml
-#nbproject/private/private.properties
+nbproject/private/private.xml
+nbproject/private/private.properties
 build/web/WEB-INF/classes/hibernate.cfg.xml
 build/web/WEB-INF/classes/hibernate.cfg.xml
 build/web/WEB-INF/classes/Presentation/Bean/LoginBean.class
-*.xml
-#nbproject/private/private.xml
+#*.xml
 *.class
-#nbproject/private/private.xml
-#nbproject/private/private.xml

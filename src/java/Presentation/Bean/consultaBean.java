@@ -11,6 +11,7 @@ import DataAccess.Entity.Consulta;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -32,6 +33,11 @@ public class consultaBean {
      */
     public consultaBean() {
         this.consults = new ArrayList<>();
+    }
+    
+    @PostConstruct
+    public void init() {
+        selectedConsult = new Consulta();
     }
 
     public List<Consulta> getConsults() {

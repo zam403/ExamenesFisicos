@@ -11,6 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +35,9 @@ public class Consulta  implements java.io.Serializable {
      private String criterio;
 
     public Consulta() {
+        this.idConsulta = 0;
+        this.paciente = new Paciente();
+        this.usuario = new Usuario();
     }
 
 	
@@ -63,6 +67,7 @@ public class Consulta  implements java.io.Serializable {
         this.idConsulta = idConsulta;
     }
 
+@OneToOne
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="Paciente_idPaciente", nullable=false)
     public Paciente getPaciente() {

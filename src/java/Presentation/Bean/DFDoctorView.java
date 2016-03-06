@@ -22,6 +22,7 @@ import org.primefaces.context.RequestContext;
  * @author Alex
  */
 @ManagedBean(name = "dFDoctorView")
+@javax.faces.bean.ViewScoped
 public class DFDoctorView {
 
     private List<Usuario> doctors;
@@ -62,7 +63,7 @@ public class DFDoctorView {
             updateConsulta.setUsuario(usuario);
             RequestContext.getCurrentInstance().closeDialog(updateConsulta);
         } catch (NullPointerException e) {
-            RequestContext.getCurrentInstance().closeDialog(null);
+            RequestContext.getCurrentInstance().closeDialog(0);
         }
     }
     
