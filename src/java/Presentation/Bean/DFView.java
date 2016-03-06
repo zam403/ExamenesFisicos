@@ -106,24 +106,26 @@ public class DFView implements Serializable{
         options.put("draggable", false);
         options.put("modal", true);
         options.put("includeViewParams", true);
-        RequestContext.getCurrentInstance().openDialog("selectDoctor", options, null);
+        System.out.println("idConsulta: " + idConsult);
+        values.add(idConsult);
+        params.put("idConsult", values);
+        RequestContext.getCurrentInstance().openDialog("selectDoctor", options, params);
     }
 
     public void onDoctorChosen(SelectEvent event) {
-        Consulta consulta = (Consulta) event.getObject();
         FacesMessage message;
         String msgs;
         try {
+            Consulta consulta = (Consulta) event.getObject();
             ConsultaDAO consultaDAO = new ConsultaDAOImpl();
             if (consultaDAO.update(consulta)) {
                 msgs = "Consulta modificada éxitosamente.";
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs,
-                        consulta.getIdConsulta().toString());
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
             } else {
                 msgs = "La consulta no puedo modificarse.";
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
             }
-        } catch (NullPointerException e) {
+        }catch (IllegalArgumentException | NullPointerException i) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "No selecciono ningun doctor", null);
         }

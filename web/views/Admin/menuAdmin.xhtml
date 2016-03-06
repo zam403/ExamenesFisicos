@@ -222,7 +222,12 @@
                                     <h:outputText value="#{consult.fecha}" />
                                 </p:column>
                                 <p:column style="width: 40px;text-align: center">
-                                    <p:commandButton icon="ui-icon-calendar">
+                                    <p:commandButton icon="ui-icon-calendar"
+                                                     update=":tabAdmin:formDeleteConsulta" 
+                                                     oncomplete="PF('consultUpdateDialog').show()" 
+                                                     title="Modificar Fecha" id="btnCalendarConsult">
+                                        <f:setPropertyActionListener value="#{consult}" 
+                                                                     target="#{dFView.selectedConsult.fecha}" />
                                     </p:commandButton>
                                 </p:column>
                                 <p:column style="width:32px;text-align: center">
@@ -262,28 +267,14 @@
                             </p:dialog>
                         </h:form>
                         <h:form id="formUpdateConsulta">
-                            <p:growl id="msgAdd" showDetail="true" />
-                            <p:dialog header="Modificar Usuario" widgetVar="consultUpdateDialog" modal="true" 
+                            <p:dialog header="Modificar Fecha" widgetVar="consultUpdateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid  columns="3" rendered="#{not empty consultaBean.selectedConsult}" 
-                                              columnClasses="label,value">
-
-                                    <h:outputText value="Paciente" />
-                                    <h:outputText value="#{consultaBean.selectedConsult.paciente.nombre} #{consultaBean.selectedConsult.paciente.apellido}" />
-                                    <p:commandButton value="Cambiar..." 
-                                                     icon="ui-icon-transferthick-e-w"
-                                                     actionListener="#{dFView.choosePatient}">
-                                        <p:ajax listener="#{dFView.onPatientChosen}" 
-                                                update=":msgs"/>
-                                    </p:commandButton>
-
-                                    <h:outputText value="Doctor" />
-                                    <h:outputText value="#{consultaBean.selectedConsult.usuario.nombre} #{consultaBean.selectedConsult.usuario.apellido}" />
-                                    <p:commandButton value="Cambiar..." 
-                                                     icon="ui-icon-transferthick-e-w"/>
-
-                                    <h:outputText value="Fecha" />
-                                    <p:inputText value="#{consultaBean.selectedConsult.fecha}"/>
+                                <p:panelGrid  columns="2" >
+                                    
+                                    <p:outputLabel value="Fecha" />
+                                    <p:calendar value="#{dFView.selectedConsult.fecha}" 
+                                                pattern="MM/dd/yyyy HH:mm:ss" 
+                                                effect="fold"/>
                                 </p:panelGrid>
                                 <f:facet name="footer">
                                     <p:commandButton update=":tabAdmin:formDataConsultations, :msgs" 

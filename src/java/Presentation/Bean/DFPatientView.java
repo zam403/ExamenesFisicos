@@ -71,7 +71,7 @@ public class DFPatientView {
             updateConsulta.setPaciente(paciente);
             RequestContext.getCurrentInstance().closeDialog(updateConsulta);
         } catch (NullPointerException e) {
-            RequestContext.getCurrentInstance().closeDialog(null);
+            RequestContext.getCurrentInstance().closeDialog(0);
         }
     }
     
