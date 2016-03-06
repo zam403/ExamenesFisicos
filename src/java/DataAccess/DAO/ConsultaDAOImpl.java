@@ -38,18 +38,17 @@ public class ConsultaDAOImpl implements ConsultaDAO{
     public ArrayList<Consulta> buscarConsultasEmpresa(Integer id_empresa) {
         ArrayList<Consulta> model = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql = "select consulta FROM Consulta as consulta join consulta.paciente where consulta.paciente.usuario = " + id_empresa.toString();
+        String sql = "FROM Consulta as c join fetch  c.paciente p join fetch c.usuario d where c.paciente.usuario = " + id_empresa.toString();
         Transaction temp = null;
         try {
             System.out.println("Antes de iniciar sesion...");
             temp = session.beginTransaction();
             System.out.println("Despues de iniciar sesion...");
             model = (ArrayList<Consulta>) session.createQuery(sql).list();
-            System.out.println("Realizo la consulta...");
-            System.out.println("Tamaño: "+ model.size() +" Modelo consultas" + model.get(0).getPaciente().getNombre());
+            System.out.println("Realizo la consulta...");;
             temp.commit();
-            System.out.println("Realizo commit");
-            System.out.println("Tamaño: "+ model.size() +" Modelo consultas" + model.get(0).getPaciente().getNombre());
+            System.out.println("Realizo commit...");
+            System.out.println("Tamaño: "+ model.size());
         } catch (Exception e) {
             System.out.println(e);
             temp.rollback();

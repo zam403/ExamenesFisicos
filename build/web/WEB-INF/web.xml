@@ -4,6 +4,30 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <filter>
+        <filter-name>AdminFiltro</filter-name>
+        <filter-class>Presentation.web.AdminFiltro</filter-class>
+    </filter>
+    <filter>
+        <filter-name>DoctorFiltro</filter-name>
+        <filter-class>Presentation.web.DoctorFiltro</filter-class>
+    </filter>
+    <filter>
+        <filter-name>EmpresaFiltro</filter-name>
+        <filter-class>Presentation.web.EmpresaFiltro</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EmpresaFiltro</filter-name>
+        <url-pattern>/faces/views/Empresa/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DoctorFiltro</filter-name>
+        <url-pattern>/faces/views/Doctor/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFiltro</filter-name>
+        <url-pattern>/faces/views/Admin/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -21,8 +45,8 @@
     <welcome-file-list>
         <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
-    <context-param>  
-        <param-name>primefaces.THEME</param-name>  
-        <param-value>start</param-value>  
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>start</param-value>
     </context-param>
 </web-app>

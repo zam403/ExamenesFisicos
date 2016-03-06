@@ -23,7 +23,8 @@
                             <p:commandButton type="button" 
                                              value="Logout" 
                                              icon="ui-icon-extlink" 
-                                             actionListener="#{loginBean.logout(actionEvent)}"/>
+                                             actionListener="#{loginBean.logout()}"
+                                             onclick="logout(xhr, status, args)"/>
                         </f:facet>
                     </p:menubar>
                 </h:form>
@@ -447,4 +448,9 @@
         </ui:composition>
 
     </h:body>
+    <script type="text/javascript">
+        function logout(xhr, status, args) {
+            location.href = args.view;
+        }
+    </script>
 </html>

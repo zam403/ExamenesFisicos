@@ -17,6 +17,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -100,30 +101,34 @@ public class LoginBean implements Serializable {
             System.out.println("Falta clave");
         } else {
             System.out.println("Tiene ambos campos");
-            {
-                this.usuarioDAO = new UsuarioDAOImpl();
-                this.usuario = new Usuario();
-                this.setUsuario(this.usuarioDAO.findUsuario(documento));
-                if (this.usuario != null && this.usuario.getClave().equals(clave)) {//this.documento.equals("admin") && this.clave.equals("admin")
-                    this.logeado = true;
-                    context.addCallbackParam("idUsuario", this.usuario.getIdUsuario());
-                    System.out.println("id Usuario Logeado 1: " + context.getCallbackParams().get("idUsuario"));
-                    if (this.usuario.getRol().getIdRol() == 1) {
-                        ruta = MyUtil.basePathLogin() + "views/Admin/menuAdmin.xhtml";
-                    } else if (this.usuario.getRol().getIdRol() == 2) {
-                        ruta = MyUtil.basePathLogin() + "menu_doctor.xhtml";
-                    } else {
-                        ruta = MyUtil.basePathLogin() + "menu_empresa.xhtml";
-                    }
-                    msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", this.usuario.getNombre());// + " " + this.usuario.getApellido());
+            this.usuarioDAO = new UsuarioDAOImpl();
+            this.usuario = new Usuario();
+            this.setUsuario(this.usuarioDAO.findUsuario(documento));
+            if (this.usuario != null && this.usuario.getClave().equals(clave)) {//this.documento.equals("admin") && this.clave.equals("admin")
+                this.logeado = true;
+                context.addCallbackParam("idUsuario", this.usuario.getIdUsuario());
+                System.out.println("id Usuario Logeado 1: " + context.getCallbackParams().get("idUsuario"));
+                FacesContext context2 = FacesContext.getCurrentInstance();
+                ExternalContext extContext = context2.getExternalContext();
+                String url = "";
+                if (this.usuario.getRol().getIdRol() == 1) {
+                    ruta = MyUtil.basePathLogin() + "views/Admin/menuAdmin.xhtml";
+                } else if (this.usuario.getRol().getIdRol() == 2) {
+                    ruta = MyUtil.basePathLogin() + "views/Doctor/menu_doctor.xhtml";
                 } else {
-                    System.out.println("entro al else");
-                    this.logeado = false;
-                    msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error",
-                            "Credenciales no válidas");
+                    ruta = MyUtil.basePathLogin() + "views/Empresa/menu_empresa.xhtml";
                 }
+                url = extContext.encodeActionURL(context2.getApplication().getViewHandler().getActionURL(context2, ruta));
+                extContext.getSessionMap().put("USER_KEY", this.usuario);
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenid@", this.usuario.getNombre());// + " " + this.usuario.getApellido());
+            } else {
+                System.out.println("entro al else");
+                this.logeado = false;
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error",
+                        "Credenciales no válidas");
             }
         }
+
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("estaLogeado", this.logeado);
         if (this.logeado) {
@@ -169,7 +174,8 @@ public class LoginBean implements Serializable {
         context.addCallbackParam("view", ruta);
     }
 
-    public void logout(ActionEvent actionEvent) {
+    public void logout() {
+        System.out.println("Cerrando sesion...");
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
@@ -178,5 +184,6 @@ public class LoginBean implements Serializable {
         String ruta = MyUtil.basePathLogin() + "login.xhtml";
         context.addCallbackParam("estaLogeado", this.logeado);
         context.addCallbackParam("view", ruta);
+        System.out.println("Cerro sesion.." + ruta);
     }
 }
