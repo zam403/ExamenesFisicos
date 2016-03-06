@@ -60,7 +60,7 @@ public class PacienteDAOImpl implements PacienteDAO {
     public List<Paciente> findAllPatients() {
         List<Paciente> patients = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql = "from Paciente";
+        String sql = "from Paciente p left join fetch p.usuario";
         Transaction temp = null;
         try {
             //session.beginTransaction();
@@ -74,6 +74,44 @@ public class PacienteDAOImpl implements PacienteDAO {
             System.out.println(e);
         }
         return patients;
+    }
+
+    @Override
+    public boolean update(Paciente paciente) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            //session.saveOrUpdate(paciente);
+            session.update(paciente);
+            temp.commit();
+            flag = true;
+        } catch (Exception e) {
+            flag = false;
+            temp.rollback();
+            System.out.println(e);
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            Paciente paciente = (Paciente) session.load(Paciente.class, id);
+            session.delete(paciente);
+            temp.commit();
+            flag = true;
+        } catch (Exception e) {
+            flag = false;
+            temp.rollback();
+            System.out.println(e);
+        }
+        return flag;
     }
 
 }

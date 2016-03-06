@@ -59,6 +59,7 @@ public class consultaBean {
     }    
 
     public void updateConsult(ActionEvent actionEvent) {
+        System.out.println("consul: " + selectedConsult.getIdConsulta());
         ConsultaDAO consultaDAO = new ConsultaDAOImpl();
         String msgs;
         if (consultaDAO.update(this.selectedConsult)) {

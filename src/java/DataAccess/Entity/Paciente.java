@@ -33,6 +33,8 @@ public class Paciente  implements java.io.Serializable {
      private Set consultas = new HashSet(0);
 
     public Paciente() {
+        this.idPaciente = 0;
+        this.usuario = new Usuario();
     }
 
 	

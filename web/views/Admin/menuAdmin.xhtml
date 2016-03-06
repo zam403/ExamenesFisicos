@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <h:head>
         <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
     </h:head>
@@ -72,7 +72,7 @@
                             <p:dialog header="Crear Usuario" widgetVar="userCreateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
                                 <p:panelGrid id="userCreate" columns="2" columnClasses="label,value">
-                                    <h:outputLabel value="Nombre" for="userName"/>
+                                    <h:outputLabel value="Nombre"/>
                                     <p:inputText value="#{usuarioBean.selectedUser.nombre}" 
                                                  required="true"
                                                  requiredMessage="Nombre requerido."/>
@@ -119,7 +119,7 @@
                                       showEffect="fade" hideEffect="explode" resizable="false">
                                 <p:panelGrid  columns="2" rendered="#{not empty usuarioBean.selectedUser}" 
                                               columnClasses="label,value">
-                                    
+
                                     <h:outputText/>
                                     <h:inputHidden value="#{usuarioBean.selectedUser.idUsuario}" />
 
@@ -272,7 +272,7 @@
                             <p:dialog header="Modificar Fecha" widgetVar="consultUpdateDialog" modal="true" 
                                       showEffect="fade" hideEffect="explode" resizable="false">
                                 <p:panelGrid  columns="3" >
-                                    
+
                                     <h:inputHidden value="#{consultaBean.selectedConsult.idConsulta}"/>
                                     <h:inputHidden value="#{consultaBean.selectedConsult.paciente.idPaciente}"/>
                                     <h:inputHidden value="#{consultaBean.selectedConsult.usuario.idUsuario}"/>
@@ -310,11 +310,101 @@
                                                  oncomplete="PF('consultDeleteDialog').hide();"/>
                             </p:confirmDialog>                    
                         </h:form>
-                        <h:form id="formAddPatient">
-                            
-                        </h:form>
                     </p:tab>
                     <p:tab title="Pacientes">
+                        <!--                        <h:form>
+                                                    <p:commandButton update=":tabAdmin:formCreate" 
+                                                                     oncomplete="PF('userCreateDialog').show()" 
+                                                                     icon="ui-icon-plus" title="Crear"
+                                                                     id="btnCreateUser" value="Crear"/>
+                                                </h:form>-->
+                        <h:form id="formDataPatients">
+                            <p:dataTable id="patientTable" var="patient" value="#{pacienteBean.patients}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorPosition="bottom">
+                                <p:column headerText="Id"
+                                          filterBy="#{patient.idPaciente}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{patient.idPaciente}" />
+                                </p:column>
+                                <p:column headerText="Nombre"
+                                          filterBy="#{patient.nombre}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{patient.nombre}" />
+                                </p:column>
+                                <p:column headerText="Apellido"
+                                          filterBy="#{patient.apellido}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{patient.apellido}" />
+                                </p:column>
+                                <p:column headerText="Documento"
+                                          filterBy="#{patient.documento}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{patient.documento}" />
+                                </p:column>
+                                <p:column headerText="Empresa">
+                                    <h:outputText value="#{patient.usuario.nombre}"/>
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":tabAdmin:formUpdatePaciente" 
+                                                     oncomplete="PF('patientUpdateDialog').show()" 
+                                                     icon="ui-icon-pencil" title="Modificar" id="btnPatUpdate">
+                                        <f:setPropertyActionListener value="#{patient}" 
+                                                                     target="#{pacienteBean.selectedPatient}" />
+                                    </p:commandButton>
+                                    <p:commandButton update=":tabAdmin:formDeletePatient" 
+                                                     oncomplete="PF('patientDeleteDialog').show()" 
+                                                     icon="ui-icon-trash" title="Eliminar" id="btnPatDelete">
+                                        <f:setPropertyActionListener value="#{patient}" 
+                                                                     target="#{pacienteBean.selectedPatient}" />
+                                    </p:commandButton>                               
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <h:form id="formUpdatePaciente">
+                            <p:dialog header="Modificar Paciente" widgetVar="patientUpdateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" >
+
+                                    <h:inputHidden value="#{pacienteBean.selectedPatient.idPaciente}"/>
+                                    <h:inputHidden value="#{pacienteBean.selectedPatient.usuario.idUsuario}"/>
+                                    
+                                    <p:outputLabel value="Nombre" />
+                                    <p:inputText value="#{pacienteBean.selectedPatient.nombre}"/>
+                                    
+                                    <p:outputLabel value="Apellido" />
+                                    <p:inputText value="#{pacienteBean.selectedPatient.apellido}"/>
+                                    
+                                    <p:outputLabel value="Documento" />
+                                    <p:inputText value="#{pacienteBean.selectedPatient.documento}"/>
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabAdmin, :msgs" 
+                                                     oncomplete="PF('patientUpdateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnUpdateAcceptConsult" value="Aceptar"
+                                                     actionListener="#{pacienteBean.updatePatient(actionEvent)}"/>
+                                    <p:commandButton oncomplete="PF('patientUpdateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnUpdateCancelConsult" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                        <h:form id="formDeletePatient">   
+                            <p:confirmDialog id="idconfirmDialog" message="En realidad desea eliminar este registro?"
+                                             header="Eliminar Registro" widgetVar="patientDeleteDialog"
+                                             showEffect="fade" hideEffect="explode">
+                                <h:inputHidden value="#{pacienteBean.selectedPatient.idPaciente}"/>
+                                <p:commandButton id="btnDeleteAceptar" value="Aceptar" 
+                                                 update=":tabAdmin:formDataPatients :msgs" 
+                                                 actionListener="#{pacienteBean.deletePatient(actionEvent)}" 
+                                                 oncomplete="PF('patientDeleteDialog').hide();"/>
+                                <p:commandButton id="btnDeleteCancelar" value="Cancelar" 
+                                                 update=":tabAdmin:formDataPatients :msgs" 
+                                                 oncomplete="PF('patientDeleteDialog').hide();"/>
+                            </p:confirmDialog>                    
+                        </h:form>
                     </p:tab>
                 </p:tabView>
             </ui:define>

@@ -18,5 +18,6 @@ public interface PacienteDAO{
     public Paciente registrarPaciente(Paciente paciente);
     public ArrayList<Paciente> buscarPacientes(String id_empresa);
     public List<Paciente> findAllPatients();
-    
+    public boolean update(Paciente paciente);
+    public boolean delete(Integer id);
 }
