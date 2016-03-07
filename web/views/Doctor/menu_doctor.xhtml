@@ -6,24 +6,24 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <head>
+    <h:head>
         <title>MENU DOCTOR</title>
-        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-           <link href="#{appManagedBean.baseUrl}resources/css/examenes.css" type="text/css" rel="stylesheet"/>
-        <link rel="stylesheet" href="http://cdn.primefaces.org/primeui/3.0.0/themes/start/theme.css" />
-    </head>
-    <body>
-        <ui:composition template="views/template.xhtml">
+        <!--<h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>-->
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+        <!--<link href="{appManagedBean.baseUrl}resources/css/examenes.css" type="text/css" rel="stylesheet"/>-->
+        <!--<link rel="stylesheet" href="http://cdn.primefaces.org/primeui/3.0.0/themes/start/theme.css" />-->
+    </h:head>
+    <h:body>
+        <ui:composition template="./../template.xhtml">
 
             <ui:define name="content">
-                <p:growl id="msgs" showDetail="true" />
-            <!-- INSERTAR DATA FORM AQUI-->
-            <p:tabView id="tabConsults">
+                <p:growl id="msgs2" showDetail="true" />
+
+                <p:tabView id="tabConsults">
                     <p:tab title="Ver consultas" id="tabViewConsults">
-                        
+
                         <h:form id="formViewConsults">
-                            <p:dataTable id="consultsTable" var="consults" value="#{dFView.consults}"
+                            <p:dataTable id="consultsTable" var="consults" value="#{consultaBean.consults}"
                                          paginator="true"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          paginatorPosition="bottom">
@@ -31,6 +31,11 @@
                                           filterBy="#{consults.idConsulta}"
                                           filterMatchMode="contains">
                                     <h:outputText value="#{consults.idConsulta}" />
+                                </p:column>
+                                <p:column headerText="Paciente">
+                                    <h:inputHidden value="#{consults.paciente.idPaciente}"/>
+                                    <h:inputHidden value="#{consults.usuario.idUsuario}"/>
+                                    <h:outputText value="#{consults.paciente.nombre} #{consults.paciente.apellido}" />
                                 </p:column>
                                 <p:column headerText="Aptitud"
                                           filterBy="#{consults.aptitud}"
@@ -53,51 +58,49 @@
                                     <h:outputText value="#{consults.criterio}" />
                                 </p:column>
                                 <p:column style="width:32px;text-align: center">
-                                    <p:commandButton update=":tabConsults:formUpdate" 
-                                                     oncomplete="PF('consultsUpdateDialog').show()" 
-                                                     icon="ui-icon-pencil" title="Modificar" id="btnUpdate">
-                                        <f:setPropertyActionListener value="#{consults}" target="#{dFView.selectedUser}" />
+                                    <p:commandButton update=":tabConsults:doctorUpdateForm, :msgs2" 
+                                                     oncomplete="PF('docUpdateDialog').show()" 
+                                                     icon="ui-icon-pencil" title="Modificar">
+                                        <f:setPropertyActionListener value="#{consults}"
+                                                                     target="#{consultaBean.selectedConsult}"/>
                                     </p:commandButton>
-                                                                   
+
                                 </p:column>
                             </p:dataTable>
                         </h:form>
-                        <h:form id="formUpdate">
-                            <p:dialog header="Modificar consulta" widgetVar="consultsUpdateDialog" modal="true" 
+                        <h:form id="doctorUpdateForm">
+                            <p:dialog header="Modificar consulta" widgetVar="docUpdateDialog" modal="true"
                                       showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid  columns="2" rendered="#{dFView.selectedConsult}" 
-                                              columnClasses="label,value">
+                                <p:panelGrid columns="2">
+                                    <h:inputHidden value="#{consultaBean.selectedConsult.idConsulta}"/>
+                                    <h:inputHidden value="#{consultaBean.selectedConsult.paciente.idPaciente}"/>
                                     
-                                    <h:outputText/>
-                                    <h:inputHidden value="#{dFView.selectedConsult}" />
-
-                                    <h:outputText value="Nombre" />
-                                    <p:inputText value="#{dFView.selectedConsult.aptitud}" 
-                                                 required="true"
-                                                 requiredMessage="Nombre requerido."/>
-
-                                    <h:outputText value="Apellido" />
-                                    <p:inputText value="#{dFView.selectedConsult.diagnostico}"
-                                                 required="true"
-                                                 requiredMessage="Apellido requerido."/>
-
+                                    <h:outputText value="Criterio"/>
+                                    <h:outputText value="#{consultaBean.selectedConsult.criterio}"/>
                                     
+                                    <h:outputText value="Diagnostico"/>
+                                    <h:inputTextarea value="#{consultaBean.selectedConsult.diagnostico}"/>
+                                    
+                                    <h:outputText value="Apto"/>
+                                    <p:selectBooleanCheckbox value="#{consultaBean.selectedConsult.aptitud}"/>
+                                    
+                                    <h:inputHidden value="#{consultaBean.selectedConsult.usuario.idUsuario}"/>
                                 </p:panelGrid>
                                 <f:facet name="footer">
-                                    <p:commandButton update=":tabConsults:formViewConsults, :msgs" 
-                                                     oncomplete="PF('consultsUpdateDialog').hide()" 
+                                    <p:commandButton update=":tabConsults:formViewConsults, :msgs2"
+                                                     oncomplete="PF('docUpdateDialog').hide()"
                                                      icon="ui-icon-disk" title="Aceptar"
-                                                     id="btnUpdateAccept" value="Aceptar"
+                                                     value="Aceptar"
                                                      actionListener="#{consultaBean.updateConsult(actionEvent)}"/>
-                                    <p:commandButton oncomplete="PF('consultsUpdateDialog').hide()" 
+                                    <p:commandButton oncomplete="PF('docUpdateDialog').hide()"
                                                      icon="ui-icon-close" title="Cancelar"
-                                                     id="btnUpdateCancel" value="Cancelar"/>
+                                                     value="Cancelar"/>
                                 </f:facet>
                             </p:dialog>
                         </h:form>
                     </p:tab>
-            </p:tabView>
+                </p:tabView>
             </ui:define>
         </ui:composition>
-</body>
+    </h:body>
 </html>
