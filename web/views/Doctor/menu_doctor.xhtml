@@ -1,14 +1,103 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-    </h:body>
-</html>
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <head>
+        <title>MENU DOCTOR</title>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+           <link href="#{appManagedBean.baseUrl}resources/css/examenes.css" type="text/css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://cdn.primefaces.org/primeui/3.0.0/themes/start/theme.css" />
+    </head>
+    <body>
+        <ui:composition template="views/template.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msgs" showDetail="true" />
+            <!-- INSERTAR DATA FORM AQUI-->
+            <p:tabView id="tabConsults">
+                    <p:tab title="Ver consultas" id="tabViewConsults">
+                        
+                        <h:form id="formViewConsults">
+                            <p:dataTable id="consultsTable" var="consults" value="#{dFView.consults}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginatorPosition="bottom">
+                                <p:column headerText="Id"
+                                          filterBy="#{consults.idConsulta}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{consults.idConsulta}" />
+                                </p:column>
+                                <p:column headerText="Aptitud"
+                                          filterBy="#{consults.aptitud}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{consults.aptitud}" />
+                                </p:column>
+                                <p:column headerText="Fecha"
+                                          filterBy="#{consults.fecha}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{consults.fecha}" />
+                                </p:column>
+                                <p:column headerText="Diagnostico"
+                                          filterBy="#{consults.diagnostico}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{consults.diagnostico}" />
+                                </p:column>
+                                <p:column headerText="Criterio"
+                                          filterBy="#{consults.criterio}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{consults.criterio}" />
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":tabConsults:formUpdate" 
+                                                     oncomplete="PF('consultsUpdateDialog').show()" 
+                                                     icon="ui-icon-pencil" title="Modificar" id="btnUpdate">
+                                        <f:setPropertyActionListener value="#{consults}" target="#{dFView.selectedUser}" />
+                                    </p:commandButton>
+                                                                   
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <h:form id="formUpdate">
+                            <p:dialog header="Modificar consulta" widgetVar="consultsUpdateDialog" modal="true" 
+                                      showEffect="fade" hideEffect="explode" resizable="false">
+                                <p:panelGrid  columns="2" rendered="#{dFView.selectedConsult}" 
+                                              columnClasses="label,value">
+                                    
+                                    <h:outputText/>
+                                    <h:inputHidden value="#{dFView.selectedConsult}" />
+
+                                    <h:outputText value="Nombre" />
+                                    <p:inputText value="#{dFView.selectedConsult.aptitud}" 
+                                                 required="true"
+                                                 requiredMessage="Nombre requerido."/>
+
+                                    <h:outputText value="Apellido" />
+                                    <p:inputText value="#{dFView.selectedConsult.diagnostico}"
+                                                 required="true"
+                                                 requiredMessage="Apellido requerido."/>
+
+                                    
+                                </p:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton update=":tabConsults:formViewConsults, :msgs" 
+                                                     oncomplete="PF('consultsUpdateDialog').hide()" 
+                                                     icon="ui-icon-disk" title="Aceptar"
+                                                     id="btnUpdateAccept" value="Aceptar"
+                                                     actionListener="#{consultaBean.updateConsult(actionEvent)}"/>
+                                    <p:commandButton oncomplete="PF('consultsUpdateDialog').hide()" 
+                                                     icon="ui-icon-close" title="Cancelar"
+                                                     id="btnUpdateCancel" value="Cancelar"/>
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                    </p:tab>
+            </p:tabView>
+            </ui:define>
+        </ui:composition>
+</body>
+</html>
