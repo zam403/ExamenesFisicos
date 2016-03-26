@@ -17,10 +17,14 @@
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputLabel for="username" value="Usuario(Documento):" />
                         <p:inputText value="#{loginBean.documento}" id="username"
-                                     label="username" />
+                                     label="username" 
+                                     required="true"
+                                     requiredMessage="Usuario requerido."/>
                         <h:outputLabel for="password" value="Clave:" />
                         <p:password value="#{loginBean.clave}" id="password"
-                                    label="password" />
+                                    label="password" 
+                                    required="true"
+                                    requiredMessage="Clave requerida."/>
                         <f:facet name="footer">
                             <p:commandButton id="loginButton" value="Login"
                                              actionListener="#{loginBean.login(actionEvent)}" update=":mensajes"

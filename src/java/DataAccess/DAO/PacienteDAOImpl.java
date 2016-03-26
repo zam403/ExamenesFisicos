@@ -114,4 +114,21 @@ public class PacienteDAOImpl implements PacienteDAO {
         return flag;
     }
 
+    @Override
+    public Paciente findPatient(String document) {
+        Paciente p = new Paciente();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql = "FROM Paciente where documento = '" + document + "'";
+        Transaction temp = null;
+        try {
+            temp = session.beginTransaction();
+            p = (Paciente) session.createQuery(sql).uniqueResult();
+            temp.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            temp.rollback();
+        }
+        return p;
+    }
+
 }

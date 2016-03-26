@@ -5,13 +5,9 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.ConsultaDAO;
-import DataAccess.DAO.ConsultaDAOImpl;
-import DataAccess.DAO.PacienteDAO;
-import DataAccess.DAO.PacienteDAOImpl;
+import BusinessLogic.Controller.empresaController;
 import DataAccess.Entity.Consulta;
 import DataAccess.Entity.Paciente;
-import DataAccess.Entity.Usuario;
 import java.awt.event.ActionEvent;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -32,7 +28,6 @@ public class empresaBean implements Serializable {
 
     private Paciente paciente;
     private Consulta consulta;
-    //private PacienteDAO pacientedao;
     private String nombre;
     private String apellido;
     private String documento;
@@ -109,58 +104,20 @@ public class empresaBean implements Serializable {
     }
     
     public void registrarPaciente(ActionEvent actionEvent){
-        FacesMessage msg;
-        Integer temp = (Integer) loginbean.getUsuario().getIdUsuario();
-        
-        System.out.println("id Usuario Logeado 2: " + temp);
-        
-        PacienteDAO pacientedao = new PacienteDAOImpl();
-        this.paciente = new Paciente();
-        
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario((Integer) temp);
-        
-        this.paciente.setUsuario(usuario);
-        this.paciente.setDocumento(documento);
-        this.paciente.setNombre(nombre);
-        this.paciente.setApellido(apellido);
-        
-        this.setPaciente(pacientedao.registrarPaciente(paciente));
-        
-        if (this.paciente.getIdPaciente() != null) {
-            Consulta consulta = new Consulta();
-           
-            Usuario doctor = new Usuario();
-            doctor.setIdUsuario(1);
-            
-            consulta.setCriterio(criterio);
-            consulta.setPaciente(paciente);
-            consulta.setUsuario(doctor);
-            
-            ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-            this.setConsulta(consultaDAO.crearConsulta(consulta));
-            
-            if(this.consulta.getIdConsulta() != null){
-                System.out.println("La consulta ha sido creada correctamente para el paciente " + this.paciente.getNombre() + " " + this.paciente.getApellido());
-            }else{
-                System.out.println("NO fue posible crear la consulta para el paciente " + this.paciente.getNombre() + " " + this.paciente.getApellido());
-            }
-            
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrar Paciente", "El nuevo paciente ha sido registrado con éxito");
-        } else {
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrar Paciente", "No fue posible registrar el nuevo paciente, por favor intente nuevamente");
-        }
+        empresaController e = new empresaController();
+        String msgs = e.registrar(loginbean.getUsuario(), documento, nombre, apellido, criterio);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrar Paciente", msgs);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
     public void consultarDiagnosticoPacientes(ActionEvent actionEvent){
         System.out.println("Pacientes idUusario "+loginbean.getUsuario().getIdUsuario().toString());
-        ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-        this.diagnosticos = new ArrayList();
-        this.setDiagnosticos(consultaDAO.buscarConsultasEmpresa(loginbean.getUsuario().getIdUsuario()));
-        System.out.println("Tamaño consultas: "+ this.diagnosticos.size());
-        System.out.println("idConsulta arraylist(0) "+this.diagnosticos.get(0).getIdConsulta());
-        this.setConsultas(this.diagnosticos.subList(0, this.diagnosticos.size()));
-        System.out.println("idConsulta list(0) "+this.consultas.get(0).getIdConsulta());
+        empresaController e = new empresaController();
+        this.diagnosticos = e.findAllPatients(loginbean.getUsuario());
+        if (!this.diagnosticos.isEmpty()) {
+            this.consultas = this.diagnosticos.subList(0, this.diagnosticos.size());
+            //this.setConsultas(this.diagnosticos.subList(0, this.diagnosticos.size()));
+            System.out.println("idConsulta list(0) " + this.consultas.get(0).getIdConsulta());
+        }
     }
 }

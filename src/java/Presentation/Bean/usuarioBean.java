@@ -5,8 +5,7 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.UsuarioDAO;
-import DataAccess.DAO.UsuarioDAOImpl;
+import BusinessLogic.Controller.userController;
 import DataAccess.Entity.Usuario;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -41,8 +40,8 @@ public class usuarioBean {
     }
 
     public List<Usuario> getUsers() {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        this.users = usuarioDAO.findAllUsers();
+        userController c = new userController();
+        this.users = c.getUsers();
         return users;
     }
 
@@ -59,45 +58,23 @@ public class usuarioBean {
     }
 
     public void createUser(ActionEvent actionEvent) {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        String msgs;
-        if (usuarioDAO.create(this.selectedUser)) {
-            System.out.println(selectedUser.toString());
-            msgs = "Usuario creado éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, el usuario no puedo crearse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        userController c = new userController();
+        String msgs = c.createUser(this.selectedUser);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void updateUser(ActionEvent actionEvent) {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        String msgs;
-        if (usuarioDAO.update(this.selectedUser)) {
-            msgs = "Usuario modificado éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, el usuario no puedo modicarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        userController c = new userController();
+        String msgs = c.updateUser(this.selectedUser);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void deleteUser(ActionEvent actionEvent) {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        String msgs;
-        if (usuarioDAO.delete(this.selectedUser.getIdUsuario())) {
-            msgs = "Usuario eliminado éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, el usuario no puedo eliminarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        userController c = new userController();
+        String msgs = c.deleteUser(this.selectedUser);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

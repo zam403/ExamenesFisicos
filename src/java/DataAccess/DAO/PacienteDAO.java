@@ -20,4 +20,5 @@ public interface PacienteDAO{
     public List<Paciente> findAllPatients();
     public boolean update(Paciente paciente);
     public boolean delete(Integer id);
+    public Paciente findPatient(String document);
 }

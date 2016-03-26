@@ -5,8 +5,7 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.PacienteDAO;
-import DataAccess.DAO.PacienteDAOImpl;
+import BusinessLogic.Controller.pacienteController;
 import DataAccess.Entity.Paciente;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import javax.faces.context.FacesContext;
 @Named(value = "pacienteBean")
 @RequestScoped
 public class pacienteBean {
-    
+
     private List<Paciente> patients;
     private Paciente selectedPatient;
 
@@ -34,15 +33,15 @@ public class pacienteBean {
     public pacienteBean() {
         this.patients = new ArrayList<>();
     }
-    
+
     @PostConstruct
     public void init() {
         selectedPatient = new Paciente();
     }
 
     public List<Paciente> getPatients() {
-        PacienteDAO pacienteDAO = new PacienteDAOImpl();
-        this.patients = pacienteDAO.findAllPatients();
+        pacienteController p = new pacienteController();
+        this.patients = p.listPatients();
         return patients;
     }
 
@@ -57,34 +56,20 @@ public class pacienteBean {
     public void setSelectedPatient(Paciente selectedPatient) {
         this.selectedPatient = selectedPatient;
     }
-    
+
     public void updatePatient(ActionEvent actionEvent) {
         System.out.println("paciente: " + this.selectedPatient.getIdPaciente());
-        PacienteDAO pacienteDAO = new PacienteDAOImpl();
-        String msgs;
-        if (pacienteDAO.update(this.selectedPatient)) {
-            msgs = "Paciente modificado éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, el paciente no puedo modicarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        pacienteController p = new pacienteController();
+        String msgs = p.updatePatient(this.selectedPatient);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void deletePatient(ActionEvent actionEvent) {
-        PacienteDAO pacienteDAO = new PacienteDAOImpl();
-        String msgs;
-        if (pacienteDAO.delete(this.selectedPatient.getIdPaciente())) {
-            msgs = "Paciente eliminado éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, el paciente no puedo eliminarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        pacienteController p = new pacienteController();
+        String msgs = p.deletePatient(this.selectedPatient);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
 }

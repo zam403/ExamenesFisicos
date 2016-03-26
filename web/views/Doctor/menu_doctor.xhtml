@@ -3,9 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>MENU DOCTOR</title>
         <!--<h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>-->
@@ -14,93 +12,111 @@
         <!--<link rel="stylesheet" href="http://cdn.primefaces.org/primeui/3.0.0/themes/start/theme.css" />-->
     </h:head>
     <h:body>
-        <ui:composition template="./../template.xhtml">
+        <!--        <ui:composition template="./../template.xhtml">-->
 
-            <ui:define name="content">
-                <p:growl id="msgs2" showDetail="true" />
+        <!--            <ui:define name="content">-->
+        <p:growl id="msgs2" showDetail="true" />
+        
+        <div align="right">
+            <h:form>
+                <h:panelGrid columns="1" cellpadding="1">
+                    <p:commandButton id="logout_emp" 
+                                     value="Cerrar Sesion" 
+                                     icon="ui-icon-extlink" 
+                                     actionListener="#{loginBean.logout()}"
+                                     oncomplete="logout(xhr, status, args)"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
 
-                <p:tabView id="tabConsults">
-                    <p:tab title="Ver consultas" id="tabViewConsults">
+        <p:tabView id="tabConsults">
+            <p:tab title="Ver consultas" id="tabViewConsults">
 
-                        <h:form id="formViewConsults">
-                            <p:dataTable id="consultsTable" var="consults" value="#{consultaBean.consults}"
-                                         paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         paginatorPosition="bottom">
-                                <p:column headerText="Id"
-                                          filterBy="#{consults.idConsulta}"
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{consults.idConsulta}" />
-                                </p:column>
-                                <p:column headerText="Paciente">
-                                    <h:inputHidden value="#{consults.paciente.idPaciente}"/>
-                                    <h:inputHidden value="#{consults.usuario.idUsuario}"/>
-                                    <h:outputText value="#{consults.paciente.nombre} #{consults.paciente.apellido}" />
-                                </p:column>
-                                <p:column headerText="Aptitud"
-                                          filterBy="#{consults.aptitud}"
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{consults.aptitud}" />
-                                </p:column>
-                                <p:column headerText="Fecha"
-                                          filterBy="#{consults.fecha}"
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{consults.fecha}" />
-                                </p:column>
-                                <p:column headerText="Diagnostico"
-                                          filterBy="#{consults.diagnostico}"
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{consults.diagnostico}" />
-                                </p:column>
-                                <p:column headerText="Criterio"
-                                          filterBy="#{consults.criterio}"
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{consults.criterio}" />
-                                </p:column>
-                                <p:column style="width:32px;text-align: center">
-                                    <p:commandButton update=":tabConsults:doctorUpdateForm, :msgs2" 
-                                                     oncomplete="PF('docUpdateDialog').show()" 
-                                                     icon="ui-icon-pencil" title="Modificar">
-                                        <f:setPropertyActionListener value="#{consults}"
-                                                                     target="#{consultaBean.selectedConsult}"/>
-                                    </p:commandButton>
+                <h:form id="formViewConsults">
+                    <p:dataTable id="consultsTable" var="consults" value="#{consultaBean.consults}"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom">
+                        <p:column headerText="Id"
+                                  filterBy="#{consults.idConsulta}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{consults.idConsulta}" />
+                        </p:column>
+                        <p:column headerText="Paciente">
+                            <h:inputHidden value="#{consults.paciente.idPaciente}"/>
+                            <h:inputHidden value="#{consults.usuario.idUsuario}"/>
+                            <h:outputText value="#{consults.paciente.nombre} #{consults.paciente.apellido}" />
+                        </p:column>
+                        <p:column headerText="Aptitud"
+                                  filterBy="#{consults.aptitud}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{consults.aptitud}" />
+                        </p:column>
+                        <p:column headerText="Fecha"
+                                  filterBy="#{consults.fecha}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{consults.fecha}" />
+                        </p:column>
+                        <p:column headerText="Diagnostico"
+                                  filterBy="#{consults.diagnostico}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{consults.diagnostico}" />
+                        </p:column>
+                        <p:column headerText="Criterio"
+                                  filterBy="#{consults.criterio}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{consults.criterio}" />
+                        </p:column>
+                        <p:column style="width:32px;text-align: center">
+                            <p:commandButton update=":tabConsults:doctorUpdateForm, :msgs2" 
+                                             oncomplete="PF('docUpdateDialog').show()" 
+                                             icon="ui-icon-pencil" title="Modificar">
+                                <f:setPropertyActionListener value="#{consults}"
+                                                             target="#{consultaBean.selectedConsult}"/>
+                            </p:commandButton>
 
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
-                        <h:form id="doctorUpdateForm">
-                            <p:dialog header="Modificar consulta" widgetVar="docUpdateDialog" modal="true"
-                                      showEffect="fade" hideEffect="explode" resizable="false">
-                                <p:panelGrid columns="2">
-                                    <h:inputHidden value="#{consultaBean.selectedConsult.idConsulta}"/>
-                                    <h:inputHidden value="#{consultaBean.selectedConsult.paciente.idPaciente}"/>
-                                    
-                                    <h:outputText value="Criterio"/>
-                                    <h:outputText value="#{consultaBean.selectedConsult.criterio}"/>
-                                    
-                                    <h:outputText value="Diagnostico"/>
-                                    <h:inputTextarea value="#{consultaBean.selectedConsult.diagnostico}"/>
-                                    
-                                    <h:outputText value="Apto"/>
-                                    <p:selectBooleanCheckbox value="#{consultaBean.selectedConsult.aptitud}"/>
-                                    
-                                    <h:inputHidden value="#{consultaBean.selectedConsult.usuario.idUsuario}"/>
-                                </p:panelGrid>
-                                <f:facet name="footer">
-                                    <p:commandButton update=":tabConsults:formViewConsults, :msgs2"
-                                                     oncomplete="PF('docUpdateDialog').hide()"
-                                                     icon="ui-icon-disk" title="Aceptar"
-                                                     value="Aceptar"
-                                                     actionListener="#{consultaBean.updateConsult(actionEvent)}"/>
-                                    <p:commandButton oncomplete="PF('docUpdateDialog').hide()"
-                                                     icon="ui-icon-close" title="Cancelar"
-                                                     value="Cancelar"/>
-                                </f:facet>
-                            </p:dialog>
-                        </h:form>
-                    </p:tab>
-                </p:tabView>
-            </ui:define>
-        </ui:composition>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <h:form id="doctorUpdateForm">
+                    <p:dialog header="Modificar consulta" widgetVar="docUpdateDialog" modal="true"
+                              showEffect="fade" hideEffect="explode" resizable="false">
+                        <p:panelGrid columns="2">
+                            <h:inputHidden value="#{consultaBean.selectedConsult.idConsulta}"/>
+                            <h:inputHidden value="#{consultaBean.selectedConsult.paciente.idPaciente}"/>
+
+                            <h:outputText value="Criterio"/>
+                            <h:outputText value="#{consultaBean.selectedConsult.criterio}"/>
+
+                            <h:outputText value="Diagnostico"/>
+                            <h:inputTextarea value="#{consultaBean.selectedConsult.diagnostico}"/>
+
+                            <h:outputText value="Apto"/>
+                            <p:selectBooleanCheckbox value="#{consultaBean.selectedConsult.aptitud}"/>
+
+                            <h:inputHidden value="#{consultaBean.selectedConsult.usuario.idUsuario}"/>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton update=":tabConsults:formViewConsults, :msgs2"
+                                             oncomplete="PF('docUpdateDialog').hide()"
+                                             icon="ui-icon-disk" title="Aceptar"
+                                             value="Aceptar"
+                                             actionListener="#{consultaBean.updateConsult(actionEvent)}"/>
+                            <p:commandButton oncomplete="PF('docUpdateDialog').hide()"
+                                             icon="ui-icon-close" title="Cancelar"
+                                             value="Cancelar"/>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </p:tab>
+        </p:tabView>
+        <!--</ui:define>-->
+        <!--</ui:composition>-->
     </h:body>
+    <script type="text/javascript">
+        function logout(xhr, status, args) {
+            console.log(args.view + " salida script");
+            location.href = args.view;
+        }
+    </script>
 </html>

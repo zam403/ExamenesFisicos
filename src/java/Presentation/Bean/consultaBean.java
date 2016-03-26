@@ -5,8 +5,7 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.ConsultaDAO;
-import DataAccess.DAO.ConsultaDAOImpl;
+import BusinessLogic.Controller.consultaController;
 import DataAccess.Entity.Consulta;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import javax.faces.context.FacesContext;
 @Named(value = "consultaBean")
 @RequestScoped
 public class consultaBean {
-    
+
     private List<Consulta> consults;
     private Consulta selectedConsult;
 
@@ -34,15 +33,15 @@ public class consultaBean {
     public consultaBean() {
         this.consults = new ArrayList<>();
     }
-    
+
     @PostConstruct
     public void init() {
         selectedConsult = new Consulta();
     }
 
     public List<Consulta> getConsults() {
-        ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-        this.consults = consultaDAO.findAllConsults();
+        consultaController c = new consultaController();
+        this.consults = c.listConsults();
         return consults;
     }
 
@@ -56,35 +55,21 @@ public class consultaBean {
 
     public void setSelectedConsult(Consulta selectedConsult) {
         this.selectedConsult = selectedConsult;
-    }    
+    }
 
     public void updateConsult(ActionEvent actionEvent) {
         System.out.println("consul: " + selectedConsult.getIdConsulta());
-        ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-        String msgs;
-        if (consultaDAO.update(this.selectedConsult)) {
-            msgs = "Consulta modificada éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, la consulta no pudo modicarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        consultaController c = new consultaController();
+        String msgs = c.updateConsult(this.selectedConsult);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void deleteConsult(ActionEvent actionEvent) {
-        ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-        String msgs;
-        if (consultaDAO.delete(this.selectedConsult.getIdConsulta())) {
-            msgs = "Consulta eliminada éxitosamente.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            msgs = "Error, la consulta no pudo eliminarse.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        consultaController c = new consultaController();
+        String msgs = c.deleteConsult(this.selectedConsult);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
 }

@@ -8,6 +8,7 @@
         <title>MENU EMPRESA</title>
     </h:head>
     <h:body>
+        <p:growl id="mensajes" showDetail="true" life="2000" />
         <div align="right">
             <h:form>
                 <h:panelGrid columns="1" cellpadding="1">
@@ -20,23 +21,32 @@
             </h:form>
         </div>
         <div class="conteiner ">            
-            <p:growl id="mensajes" showDetail="true" life="2000" />
             <h:form id="form">                
                 <p:tabView>
                     <p:tab title="Vincular Paciente">
                         <h:panelGrid columns="2" cellpadding="10">
                             <h:outputLabel for="documento" value="Documento:" />
                             <p:inputText value="#{empresaBean.documento}" id="documento"
-                                         label="documento"/>
+                                         label="documento"
+                                         required="true"
+                                         requiredMessage="Documento requerido">
+                                <f:validateLength minimum="8" />
+                            </p:inputText>
                             <h:outputLabel for="nombre" value="Nombres:" />
                             <p:inputText value="#{empresaBean.nombre}" id="nombre"
-                                         label="nombre"/>
+                                         label="nombre"
+                                         required="true"
+                                         requiredMessage="Nombre requerido."/>
                             <h:outputLabel for="apellido" value="Apellidos:" />
                             <p:inputText value="#{empresaBean.apellido}" id="apellido"
-                                         label="apellido"/>
+                                         label="apellido"
+                                         required="true"
+                                         requiredMessage="Apellido Requerido"/>
                             <h:outputLabel for="criterio" value="Criterio a evaluar:" />
                             <p:inputText value="#{empresaBean.criterio}" id="criterio"
-                                         label="criterio" />
+                                         label="criterio"
+                                         required="true"
+                                         requiredMessage="Criterio de Evaluacion requerido."/>
                             <f:facet name="footer">
                                 <p:commandButton id="nuevoButton" value="Vincular"
                                                  actionListener="#{empresaBean.registrarPaciente(actionEvent)}" update=":mensajes"/>
@@ -45,7 +55,8 @@
                     </p:tab>
                     <p:tab title="Consultar Pacientes">
                         <h:panelGrid columns="2" cellpadding="10" onclick="#{empresaBean.consultarDiagnosticoPacientes(actionEvent)}">
-                            <p:dataTable var="consulta" value="#{empresaBean.consultas}">
+                            <p:dataTable var="consulta" value="#{empresaBean.consultas}"
+                                         emptyMessage="Aun no tiene pacientes registrados.">
                                 <p:column headerText="Consulta">
                                     <h:outputText value="#{consulta.idConsulta}" />
                                 </p:column>
@@ -70,7 +81,8 @@
                             </p:dataTable>
                             <f:facet name="footer">
                                 <p:commandButton id="nuevoButton2" value="Actualizar"
-                                                 oncomplete="actualizar(xhr, status, args)"/>                                
+                                                 oncomplete="actualizar(xhr, status, args)"
+                                                 resetValues="true"/>                                
                             </f:facet>
                         </h:panelGrid>
                     </p:tab>
@@ -81,6 +93,7 @@
     <script type="text/javascript">
         function actualizar(xhr, status, args) {
             location.reload();
+            
         }
         function logout(xhr, status, args) {
             location.href = args.view;

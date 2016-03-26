@@ -5,10 +5,7 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.RolDAO;
-import DataAccess.DAO.RolDAOImpl;
-import DataAccess.Entity.Rol;
-import java.util.ArrayList;
+import BusinessLogic.Controller.rolController;
 import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -31,13 +28,8 @@ public class rolBean {
     }
 
     public List<SelectItem> getSelectRol() {
-        this.selectRol = new ArrayList<SelectItem>();
-        RolDAO rolDAO = new RolDAOImpl();
-        List<Rol> rols = rolDAO.selectItems();
-        for (Rol rol : rols) {
-            SelectItem selectItem = new SelectItem(rol.getIdRol(), rol.getRol());
-            this.selectRol.add(selectItem);
-        }
+        rolController c = new rolController();
+        this.selectRol = c.getRols();
         return selectRol;
     }    
     

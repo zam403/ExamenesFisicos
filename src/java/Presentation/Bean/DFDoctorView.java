@@ -5,16 +5,11 @@
  */
 package Presentation.Bean;
 
-import DataAccess.DAO.ConsultaDAO;
-import DataAccess.DAO.ConsultaDAOImpl;
-import DataAccess.DAO.UsuarioDAO;
-import DataAccess.DAO.UsuarioDAOImpl;
+import BusinessLogic.Controller.consultaController;
 import DataAccess.Entity.Consulta;
 import DataAccess.Entity.Usuario;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -46,8 +41,8 @@ public class DFDoctorView {
     }       
 
     public List<Usuario> getDoctors() {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        this.doctors = usuarioDAO.findAllDoctors();
+        consultaController c = new consultaController();
+        this.doctors = c.listDoctors();
         return doctors;
     }       
 
@@ -55,13 +50,13 @@ public class DFDoctorView {
         usuario = this.selectedDoctor;
         System.out.println("idConsult2: " + idConsult);
         try {
-            ConsultaDAO consultaDAO = new ConsultaDAOImpl();
-            Consulta updateConsulta = consultaDAO.findConsult(Integer.parseInt(this.idConsult));
-            System.out.println("Consulta encontrada: " + updateConsulta.getIdConsulta()
-                    + " " + updateConsulta.getPaciente().getNombre());
+            consultaController c = new consultaController();
+            Consulta consulta = c.findConsult(Integer.parseInt(this.idConsult));
+            System.out.println("Consulta encontrada: " + consulta.getIdConsulta()
+                    + " " + consulta.getPaciente().getNombre());
             System.out.println("doctor: " + usuario.getNombre());
-            updateConsulta.setUsuario(usuario);
-            RequestContext.getCurrentInstance().closeDialog(updateConsulta);
+            consulta.setUsuario(usuario);
+            RequestContext.getCurrentInstance().closeDialog(consulta);
         } catch (NullPointerException e) {
             RequestContext.getCurrentInstance().closeDialog(0);
         }
