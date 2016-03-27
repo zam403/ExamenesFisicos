@@ -54,6 +54,8 @@ public class DFView implements Serializable {
 
     public void setSelectedConsult(Consulta selectedConsult) {
         this.selectedConsult = selectedConsult;
+        this.idConsult = this.selectedConsult.getIdConsulta().toString();
+        System.out.println("id consulta: " + this.idConsult);
     }
 
 //    public void choosePatient() {

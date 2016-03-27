@@ -7,6 +7,7 @@ package Presentation.Bean;
 
 import BusinessLogic.Controller.consultaController;
 import DataAccess.Entity.Consulta;
+import DataAccess.Entity.Usuario;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class consultaBean {
 
     private List<Consulta> consults;
     private Consulta selectedConsult;
+    private List<Usuario> doctors;
+    private Usuario selectedDoctor;
 
     /**
      * Creates a new instance of consultaBean
@@ -37,6 +40,7 @@ public class consultaBean {
     @PostConstruct
     public void init() {
         selectedConsult = new Consulta();
+        selectedDoctor = new Usuario();
     }
 
     public List<Consulta> getConsults() {
@@ -57,10 +61,35 @@ public class consultaBean {
         this.selectedConsult = selectedConsult;
     }
 
+    public List<Usuario> getDoctors() {
+        consultaController c = new consultaController();
+        this.doctors = c.listDoctors();
+        return doctors;
+    }
+
+    public void setDoctors(List<Usuario> doctors) {
+        this.doctors = doctors;
+    }
+
+    public Usuario getSelectedDoctor() {
+        return selectedDoctor;
+    }
+
+    public void setSelectedDoctor(Usuario selectedDoctor) {
+        this.selectedDoctor = selectedDoctor;
+    }
+
     public void updateConsult(ActionEvent actionEvent) {
         System.out.println("consul: " + selectedConsult.getIdConsulta());
         consultaController c = new consultaController();
         String msgs = c.updateConsult(this.selectedConsult);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void updateDoctor(ActionEvent actionEvent) {
+        consultaController c = new consultaController();
+        String msgs = c.updateDoctor(this.selectedDoctor, this.selectedConsult.getIdConsulta());
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }

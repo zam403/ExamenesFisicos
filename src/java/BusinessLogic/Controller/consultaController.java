@@ -45,6 +45,27 @@ public class consultaController {
         }
         return msgs;
     }
+    
+    public String updateDoctor(Usuario doctor, Integer idConsulta) {
+        String msgs;
+        ConsultaDAO consultaDAO = new ConsultaDAOImpl();
+        Consulta consulta = consultaDAO.findConsult(idConsulta);
+        if (consulta != null) {
+            if (doctor != null) {
+                consulta.setUsuario(doctor);
+                if (consultaDAO.update(consulta)) {
+                    msgs = "Consulta modificada éxitosamente.";
+                } else {
+                    msgs = "Error, la consulta no pudo modicarse.";
+                }
+            } else {
+                msgs = "No seleccionó ningun doctor.";
+            }
+        } else {
+            msgs = "Error, consulta no encontrada.";
+        }
+        return msgs;
+    }
 
     public String deleteConsult(Consulta consulta) {
         ConsultaDAO consultaDAO = new ConsultaDAOImpl();
